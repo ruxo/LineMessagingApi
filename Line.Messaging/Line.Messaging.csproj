@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>pierre3, kenamanu</Authors>
     <Company></Company>
     <Product>Line Messaging API</Product>
@@ -9,7 +9,7 @@
     <Version>1.4.5</Version>
     <Copyright>© 2018 pierre3</Copyright>
     <PackageLicenseUrl>https://github.com/pierre3/LineMessagingApi/blob/master/LICENSE</PackageLicenseUrl>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageTags>Line Messaging API;line;bot</PackageTags>
     <PackageProjectUrl>https://github.com/pierre3/LineMessagingApi/</PackageProjectUrl>
     <IncludeSymbols>true</IncludeSymbols>
@@ -37,7 +37,8 @@ https://developers.line.biz/en/news/2019/01/
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>

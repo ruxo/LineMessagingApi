@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 
 namespace Line.Messaging
@@ -28,7 +29,7 @@ namespace Line.Messaging
             [ComponentSize._5xl] = "5xl",
         })
         {
-            CamelCaseText = true;
+            NamingStrategy = new CamelCaseNamingStrategy();
         }
     }
 

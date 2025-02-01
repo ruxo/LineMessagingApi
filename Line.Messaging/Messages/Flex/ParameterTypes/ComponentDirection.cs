@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     public enum ComponentDirection
     {

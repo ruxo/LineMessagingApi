@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Line.Messaging.Liff
+﻿namespace Line.Messaging.Liff
 {
     /// <summary>
     /// Size of the LIFF app view. Specify one of the following values

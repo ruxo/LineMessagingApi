@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Line.Messaging.Liff
+﻿namespace Line.Messaging.Liff
 {
     public class LiffApp
     {

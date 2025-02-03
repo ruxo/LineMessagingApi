@@ -1,16 +1,15 @@
-﻿namespace Line.Messaging.Webhooks
+﻿namespace Line.Messaging.Webhooks;
+
+/// <summary>
+/// Webhook event message types.
+/// </summary>
+public enum EventMessageType
 {
-    /// <summary>
-    /// Webhook event message types.
-    /// </summary>
-    public enum EventMessageType
-    {
-        Text,
-        Image,
-        Video,
-        Audio,
-        Location,
-        Sticker,
-        File
-    }
+    Text,
+    Image,
+    Video,
+    Audio,
+    Location,
+    Sticker,
+    File
 }

@@ -1,9 +1,7 @@
-﻿namespace Line.Messaging.Webhooks
-{
+﻿namespace Line.Messaging.Webhooks;
 
-    public enum LinkResult
-    {
-        OK,
-        Failed
-    }
+public enum LinkResult
+{
+    OK,
+    Failed
 }

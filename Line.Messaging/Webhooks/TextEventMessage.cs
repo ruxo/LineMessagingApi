@@ -1,15 +1,15 @@
-﻿namespace Line.Messaging.Webhooks
-{
-    /// <summary>
-    /// Message object which contains the text sent from the source.
-    /// </summary>
-    public class TextEventMessage : EventMessage
-    {
-        public string Text { get; }
+﻿namespace Line.Messaging.Webhooks;
 
-        public TextEventMessage(string id, string text) : base(EventMessageType.Text, id)
-        {
-            Text = text;
-        }
+/// <summary>
+/// Message object which contains the text sent from the source.
+/// </summary>
+public class TextEventMessage : EventMessage
+{
+    public required string Text { get; init; }
+    public required string QuoteToken { get; init; }
+
+    public TextEventMessage()
+    {
+        Type = EventMessageType.Text;
     }
 }

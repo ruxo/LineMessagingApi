@@ -1,13 +1,7 @@
-﻿namespace Line.Messaging.Webhooks
-{
-    public abstract class ReplyableEvent : WebhookEvent
-    {
-        public string ReplyToken { get; }
+﻿namespace Line.Messaging.Webhooks;
 
-        public ReplyableEvent(WebhookEventType eventType, WebhookEventSource source, long timestamp, string replyToken)
-            : base(eventType, source, timestamp)
-        {
-            ReplyToken = replyToken;
-        }
-    }
+[PublicAPI]
+public abstract class ReplyableEvent : WebhookEvent
+{
+    public string? ReplyToken { get; init; }
 }

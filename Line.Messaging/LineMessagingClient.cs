@@ -23,7 +23,7 @@ namespace Line.Messaging
         private string _uri;
 
         /// <summary>
-        /// Constructor 
+        /// Constructor
         /// </summary>
         /// <param name="channelAccessToken">ChannelAccessToken</param>
         /// <param name="uri">Request URI</param>
@@ -39,7 +39,7 @@ namespace Line.Messaging
         // https://developers.line.me/en/docs/messaging-api/reference/#oauth
 
         /// <summary>
-        /// Issues a short-lived channel access token. 
+        /// Issues a short-lived channel access token.
         /// Up to 30 tokens can be issued. If the maximum is exceeded, existing channel access tokens will be revoked in the order of when they were first issued.
         /// https://developers.line.me/en/docs/messaging-api/reference/#oauth
         /// </summary>
@@ -107,7 +107,7 @@ namespace Line.Messaging
 
         #endregion
 
-        #region Message 
+        #region Message
         // https://developers.line.me/en/docs/messaging-api/reference/#message
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Line.Messaging
         /// <param name="messages">Reply Text messages. Up to 5 messages.</param>
         public virtual Task ReplyMessageAsync(string replyToken, params string[] messages)
         {
-            return ReplyMessageAsync(replyToken, messages.Select(msg => new TextMessage(msg)).ToArray());
+            return ReplyMessageAsync(replyToken, messages.Select(msg => new TextMessage{ Text = msg }).ToArray());
         }
 
         /// <summary>
@@ -202,7 +202,7 @@ $@"{{
         /// <param name="messages">Reply text messages. Up to 5 messages.</param>
         public virtual Task PushMessageAsync(string to, params string[] messages)
         {
-            return PushMessageAsync(to, messages.Select(msg => new TextMessage(msg)).ToArray());
+            return PushMessageAsync(to, messages.Select(msg => new TextMessage{ Text = msg }).ToArray());
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ $@"{{
         /// <param name="messages">Reply text messages. Up to 5 messages.</param>
         public virtual Task MultiCastMessageAsync(IList<string> to, params string[] messages)
         {
-            return MultiCastMessageAsync(to, messages.Select(msg => new TextMessage(msg)).ToArray());
+            return MultiCastMessageAsync(to, messages.Select(msg => new TextMessage{ Text = msg }).ToArray());
         }
 
 
@@ -307,7 +307,7 @@ $@"{{
 
         /// <summary>
         /// Gets the user profile of a member of a group that the bot is in. This includes user profiles of users who have not added the bot as a friend or have blocked the bot.
-        /// Use the group ID and user ID returned in the source object of webhook event objects. Do not use the LINE ID used in the LINE app. 
+        /// Use the group ID and user ID returned in the source object of webhook event objects. Do not use the LINE ID used in the LINE app.
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-group-member-profile
         /// </summary>
         /// <param name="groupId">Identifier of the group</param>
@@ -322,8 +322,8 @@ $@"{{
         /// <summary>
         /// Gets the user IDs of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
         /// This feature is only available for LINE@ Approved accounts or official accounts.
-        /// Use the group Id returned in the source object of webhook event objects. 
-        /// Users who have not agreed to the Official Accounts Terms of Use are not included in memberIds. There is no fixed number of memberIds. 
+        /// Use the group Id returned in the source object of webhook event objects.
+        /// Users who have not agreed to the Official Accounts Terms of Use are not included in memberIds. There is no fixed number of memberIds.
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-group-member-user-ids
         /// </summary>
         /// <param name="groupId">Identifier of the group</param>
@@ -343,7 +343,7 @@ $@"{{
 
         /// <summary>
         /// Gets the user profiles of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
-        /// Use the group Id returned in the source object of webhook event objects. 
+        /// Use the group Id returned in the source object of webhook event objects.
         /// This feature is only available for LINE@ Approved accounts or official accounts
         /// </summary>
         /// <param name="groupId">Identifier of the group</param>
@@ -368,7 +368,7 @@ $@"{{
 
         /// <summary>
         /// Leave a group.
-        /// Use the ID that is returned via webhook from the source group. 
+        /// Use the ID that is returned via webhook from the source group.
         /// https://developers.line.me/en/docs/messaging-api/reference/#leave-group
         /// </summary>
         /// <param name="groupId">Group ID</param>
@@ -399,7 +399,7 @@ $@"{{
 
         /// <summary>
         /// Gets the user IDs of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
-        /// Use the room ID returned in the source object of webhook event objects. 
+        /// Use the room ID returned in the source object of webhook event objects.
         /// This feature is only available for LINE@ Approved accounts or official accounts.
         /// https://developers.line.me/en/docs/messaging-api/reference/#get-room-member-user-ids
         /// </summary>
@@ -420,7 +420,7 @@ $@"{{
 
         /// <summary>
         /// Gets the user profiles of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
-        /// Use the room ID returned in the source object of webhook event objects. 
+        /// Use the room ID returned in the source object of webhook event objects.
         /// This feature is only available for LINE@ Approved accounts or official accounts.
         /// </summary>
         /// <param name="roomId">Identifier of the room</param>
@@ -445,7 +445,7 @@ $@"{{
 
         /// <summary>
         /// Leave a room.
-        /// Use the ID that is returned via webhook from the source room. 
+        /// Use the ID that is returned via webhook from the source room.
         /// </summary>
         /// <param name="roomId">Room ID</param>
         public virtual async Task LeaveFromRoomAsync(string roomId)
@@ -472,7 +472,7 @@ $@"{{
         }
 
         /// <summary>
-        /// Creates a rich menu. 
+        /// Creates a rich menu.
         /// Note: You must upload a rich menu image and link the rich menu to a user for the rich menu to be displayed.You can create up to 10 rich menus for one bot.
         /// The rich menu represented as a rich menu object.
         /// https://developers.line.me/en/docs/messaging-api/reference/#create-rich-menu
@@ -567,7 +567,7 @@ $@"{{
 
         /// <summary>
         /// Uploads and attaches a jpeg image to a rich menu.
-        /// Images must have one of the following resolutions: 2500x1686, 2500x843. 
+        /// Images must have one of the following resolutions: 2500x1686, 2500x843.
         /// You cannot replace an image attached to a rich menu.To update your rich menu image, create a new rich menu object and upload another image.
         /// https://developers.line.me/en/docs/messaging-api/reference/#upload-rich-menu-image
         /// </summary>
@@ -580,7 +580,7 @@ $@"{{
 
         /// <summary>
         /// Uploads and attaches a png image to a rich menu.
-        /// Images must have one of the following resolutions: 2500x1686, 2500x843. 
+        /// Images must have one of the following resolutions: 2500x1686, 2500x843.
         /// You cannot replace an image attached to a rich menu.To update your rich menu image, create a new rich menu object and upload another image.
         /// https://developers.line.me/en/docs/messaging-api/reference/#upload-rich-menu-image
         /// </summary>
@@ -709,7 +709,7 @@ $@"{{
         }
 
         #endregion
-        
+
         public void Dispose()
         {
             _client?.Dispose();

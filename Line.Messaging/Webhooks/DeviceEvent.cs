@@ -1,20 +1,16 @@
-﻿namespace Line.Messaging.Webhooks
+﻿using System.Text.Json.Serialization;
+
+namespace Line.Messaging.Webhooks;
+
+[PublicAPI]
+public class DeviceEvent : WebhookEvent
 {
-    public abstract class DeviceEvent : WebhookEvent
-    {
-        public Things Things { get; }
-        public DeviceEvent(WebhookEventSource source, long timestamp, Things things)
-            : base(WebhookEventType.Things, source, timestamp)
-        {
-            Things = things;
-        }
+    public required Things Things { get; init; }
 
-        public static DeviceEvent Create(WebhookEventSource source, long timestamp, Things things)
-        {
-            return (things.Type == ThingsType.Link)
-                ? new DeviceLinkEvent(source, timestamp, things) as DeviceEvent
-                : new DeviceUnlinkEvent(source, timestamp, things) as DeviceEvent;
-        }
+    [JsonIgnore]
+    public bool IsLink => Things.Type == ThingsType.Link;
+
+    public DeviceEvent() {
+        Type = WebhookEventType.Things;
     }
-
 }

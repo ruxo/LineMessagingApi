@@ -1,19 +1,17 @@
-﻿namespace Line.Messaging.Webhooks
+﻿namespace Line.Messaging.Webhooks;
+
+/// <summary>
+/// Event object which contains the sent message. The message field contains a message object which corresponds with the message type. You can reply to message events.
+/// </summary>
+public class MessageEvent : ReplyableEvent
 {
     /// <summary>
-    /// Event object which contains the sent message. The message field contains a message object which corresponds with the message type. You can reply to message events.
+    /// Contents of the message
     /// </summary>
-    public class MessageEvent : ReplyableEvent
-    {
-        /// <summary>
-        /// Contents of the message
-        /// </summary>
-        public EventMessage Message { get; }
+    public required EventMessage Message { get; init; }
 
-        public MessageEvent(WebhookEventSource source, long timestamp, EventMessage message, string replyToken)
-            : base(WebhookEventType.Message, source, timestamp, replyToken)
-        {
-            Message = message;
-        }
+    public MessageEvent()
+    {
+        Type = WebhookEventType.Message;
     }
 }

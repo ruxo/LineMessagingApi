@@ -1,30 +1,18 @@
-﻿namespace Line.Messaging.Webhooks
+﻿namespace Line.Messaging.Webhooks;
+
+/// <summary>
+/// LINE Things
+/// </summary>
+[PublicAPI]
+public class Things(string deviceId, ThingsType type)
 {
     /// <summary>
-    /// LINE Things
+    /// Device ID of the LINE Things-compatible device that was linked with LINE
     /// </summary>
-    public class Things
-    {
-        /// <summary>
-        /// Device ID of the LINE Things-compatible device that was linked with LINE
-        /// </summary>
-        public string DeviceId { get; }
+    public string DeviceId => deviceId;
 
-        /// <summary>
-        /// Link or Unlink
-        /// </summary>
-        public ThingsType Type { get; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="deviceId">Device ID of the LINE Things-compatible device that was linked with LINE</param>
-        /// <param name="type">Link or Unlink</param>
-        public Things(string deviceId, ThingsType type)
-        {
-            DeviceId = deviceId;
-            Type = type;
-        }
-
-    }
+    /// <summary>
+    /// Link or Unlink
+    /// </summary>
+    public ThingsType Type => type;
 }

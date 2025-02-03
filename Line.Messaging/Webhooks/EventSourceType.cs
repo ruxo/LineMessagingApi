@@ -1,12 +1,14 @@
-﻿namespace Line.Messaging.Webhooks
+﻿using System.Text.Json.Serialization;
+
+namespace Line.Messaging.Webhooks;
+
+/// <summary>
+/// Webhook Event Source Type.
+/// </summary>
+[PublicAPI]
+public enum EventSourceType
 {
-    /// <summary>
-    /// Webhook Event Source Type.
-    /// </summary>
-    public enum EventSourceType
-    {
-        User,
-        Group,
-        Room
-    }
+    [JsonStringEnumMemberName("user")] User,
+    [JsonStringEnumMemberName("group")] Group,
+    [JsonStringEnumMemberName("room")] Room
 }

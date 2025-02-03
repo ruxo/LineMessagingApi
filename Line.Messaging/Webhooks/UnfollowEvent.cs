@@ -1,13 +1,12 @@
-﻿namespace Line.Messaging.Webhooks
+﻿namespace Line.Messaging.Webhooks;
+
+/// <summary>
+/// Event object for when your account is blocked.
+/// </summary>
+public class UnfollowEvent : WebhookEvent
 {
-    /// <summary>
-    /// Event object for when your account is blocked.
-    /// </summary>
-    public class UnfollowEvent : WebhookEvent
+    public UnfollowEvent()
     {
-        public UnfollowEvent(WebhookEventSource source, long timestamp)
-            : base(WebhookEventType.Unfollow, source, timestamp)
-        {
-        }
+        Type = WebhookEventType.Unfollow;
     }
 }

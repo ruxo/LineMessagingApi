@@ -1,9 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <Authors>pierre3, kenamanu</Authors>
-    <Company></Company>
+      <LangVersion>preview</LangVersion>
+      <ImplicitUsings>true</ImplicitUsings>
+    <TargetFramework>net9.0</TargetFramework>
+    <Authors>pierre3, kenamanu, ruxozheng</Authors>
     <Product>Line Messaging API</Product>
     <Description>SDK for the LINE Messaging API for C#</Description>
     <Version>1.4.5</Version>
@@ -24,21 +25,17 @@ https://developers.line.biz/en/news/2019/01/
 - Changed methods of LineMessagingClient class to virtual method.</PackageReleaseNotes>
     <AssemblyVersion>1.4.5.0</AssemblyVersion>
     <FileVersion>1.4.5.0</FileVersion>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile>bin\Release\netstandard1.3\Line.Messaging.xml</DocumentationFile>
-    <NoWarn>1701;1702;1705;1591</NoWarn>
-    <LangVersion>7.3</LangVersion>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <LangVersion>7.3</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="RZ.Foundation" Version="7.0.0-beta.61" />
   </ItemGroup>
 
 </Project>

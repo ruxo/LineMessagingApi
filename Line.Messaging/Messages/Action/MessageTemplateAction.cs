@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// When a control associated with this action is tapped, the string in the text field is sent as a message from the user.

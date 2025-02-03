@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Error returned from LINE Platform

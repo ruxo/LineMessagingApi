@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// This is a component that defines the layout of child components. You can also include a box in a box.

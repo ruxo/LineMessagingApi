@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     public class CarouselContainerFlexMessage : FlexMessage
     {

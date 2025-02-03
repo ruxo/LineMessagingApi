@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Response from Get group member user IDs API

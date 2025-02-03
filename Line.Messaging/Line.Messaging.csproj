@@ -1,8 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-      <LangVersion>preview</LangVersion>
-      <ImplicitUsings>true</ImplicitUsings>
     <TargetFramework>net9.0</TargetFramework>
     <Authors>pierre3, kenamanu, ruxozheng</Authors>
     <Product>Line Messaging API</Product>
@@ -33,9 +31,9 @@ https://developers.line.biz/en/news/2019/01/
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="RZ.Foundation" Version="7.0.0-beta.61" />
+    <PackageReference Include="JetBrains.Annotations" />
+    <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="RZ.Foundation" />
   </ItemGroup>
 
 </Project>

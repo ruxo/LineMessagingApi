@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
 namespace Line.Messaging.Webhooks;
@@ -14,26 +13,30 @@ public static class WebhookRequestMessageHelper
     /// <param name="channelSecret">ChannelSecret</param>
     /// <param name="botUserId">BotUserId</param>
     /// <returns>List of WebhookEvent</returns>
-    public static async Task<IEnumerable<WebhookEvent>> GetWebhookEventsAsync(this HttpRequestMessage request, string channelSecret, string? botUserId = null)
+    public static async Task<Outcome<WebhookMessage>> GetWebhookMessage(this HttpRequestMessage request, string channelSecret, string? botUserId = null)
     {
-        var content = await request.Content.ReadAsStringAsync();
+        var content = await request.Content!.ReadAsStringAsync();
 
         var xLineSignature = request.Headers.GetValues("X-Line-Signature").FirstOrDefault();
-        if (string.IsNullOrEmpty(xLineSignature) || !VerifySignature(channelSecret, xLineSignature, content))
-        {
-            throw new InvalidSignatureException("Signature validation faild.");
-        }
 
-        dynamic json = JsonConvert.DeserializeObject(content);
+        return GetWebhookMessage(channelSecret, xLineSignature, content, botUserId);
+    }
 
-        if (!string.IsNullOrEmpty(botUserId))
-        {
-            if(botUserId != (string)json.destination)
-            {
-                throw new UserIdMismatchException("Bot user ID does not match.");
-            }
-        }
-        return WebhookEventParser.ParseEvents(json.events);
+    public static Outcome<WebhookMessage> GetWebhookMessage(string channelSecret, string? signature, string? content, string? botUserId) {
+        if (string.IsNullOrEmpty(content))
+            throw new ArgumentNullException(nameof(content));
+
+        if (string.IsNullOrEmpty(signature) || !VerifySignature(channelSecret, signature, content))
+            throw new InvalidSignatureException("Signature validation failed");
+
+        var result = WebhookMessage.TryParse(content);
+
+        if (result.IfSuccess(out var @event, out _) && !string.IsNullOrEmpty(botUserId) && botUserId != @event.Destination)
+            throw new UserIdMismatchException("Bot user ID does not match.") {
+                Data = { { "destination", @event.Destination } }
+            };
+
+        return result;
     }
 
     /// <summary>

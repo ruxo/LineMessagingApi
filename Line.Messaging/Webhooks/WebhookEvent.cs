@@ -44,7 +44,7 @@ public abstract class WebhookEvent
     /// </summary>
     public long Timestamp { get; init; }
 
-    public static Outcome<WebhookEvent> CreateFrom(string jsonText) {
+    public static Outcome<WebhookEvent> TryParse(string jsonText) {
         var (error, @event) = Try(jsonText, s => JsonSerializer.Deserialize<WebhookEvent>(s, LineJson.Options));
         return error is null ? @event! : ErrorFrom.Exception(error);
     }

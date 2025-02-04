@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+      <IsPackable>false</IsPackable>
     <OutputType>Exe</OutputType>
     <RootNamespace>UnitTests</RootNamespace>
     <TargetFramework>net9.0</TargetFramework>

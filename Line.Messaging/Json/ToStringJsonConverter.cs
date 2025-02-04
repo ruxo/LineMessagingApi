@@ -1,29 +1,14 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
 
-namespace Line.Messaging
+namespace Line.Messaging;
+
+public class ToStringJsonConverter<T> : JsonConverter<T>
 {
-
-    public class ToStringJsonConverter : JsonConverter
-    {
-        public override bool CanConvert(Type objectType)
-        {
-            return true;
-        }
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            writer.WriteValue(value.ToString());
-        }
-
-        public override bool CanRead
-        {
-            get { return false; }
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException();
-        }
-
+    public override T Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+        throw new NotSupportedException();
+    }
+    public override void Write(Utf8JsonWriter writer, T value, JsonSerializerOptions options) {
+        writer.WriteStringValue(value!.ToString());
     }
 }

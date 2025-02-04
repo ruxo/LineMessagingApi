@@ -10,6 +10,9 @@ public static class LineJson
         = new JsonSerializerOptions {
             UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow,
             RespectNullableAnnotations = true,
-            Converters = { new TypedClassConverter([typeof(LineJson).Assembly]) }
+            Converters = {
+                new TypedClassConverter([typeof(LineJson).Assembly]),
+                new ToStringJsonConverter<AspectRatio>()
+            }
         }.UseRzRecommendedSettings();
 }

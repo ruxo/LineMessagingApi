@@ -13,11 +13,11 @@ public interface ILineDataClient
 
 public class LineDataClient(HttpClient http) : ILineDataClient
 {
-    public const string OfficialUri = "https://api-data.line.me";
+    public const string OfficialUri = "https://api-data.line.me/v2/";
 
     public async Task<ContentStream> GetContentStreamAsync(string messageId)
     {
-        var response = await http.GetAsync($"/bot/message/{messageId}/content").EnsureSuccessStatusCodeAsync();
+        var response = await http.GetAsync($"bot/message/{messageId}/content").EnsureSuccessStatusCodeAsync();
         return new ContentStream(await response.Content.ReadAsStreamAsync(), response.Content.Headers);
     }
 }

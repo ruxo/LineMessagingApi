@@ -1,11 +1,31 @@
-﻿namespace Line.Messaging;
+﻿using System.Text.Json.Serialization;
+
+namespace Line.Messaging;
+
+public enum ChatMode
+{
+    [JsonStringEnumMemberName("chat")] Chat,
+    [JsonStringEnumMemberName("bot")] Bot
+}
+
+public enum ReadMode
+{
+    [JsonStringEnumMemberName("auto")] Auto,
+    [JsonStringEnumMemberName("manual")] Manual
+}
+public record BotInfo(string UserId, string BasicId, string? PremiumId, string DisplayName, Uri? PictureUrl, ChatMode ChatMode, ReadMode MarkAsReadMode);
 
 /// <summary>
 /// LINE Messaging API client, which handles request/response to LINE server.
 /// </summary>
 [PublicAPI]
-public interface ILineMessagingClient
-{
+public interface ILineMessagingClient {
+    #region Bot
+
+    Task<BotInfo> GetBotInfo();
+
+    #endregion
+
     #region Message
 
     /// <summary>

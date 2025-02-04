@@ -84,15 +84,6 @@ public interface ILineMessagingClient
     /// <param name="messages">Reply text messages. Up to 5 messages.</param>
     Task MultiCastMessageAsync(IEnumerable<string> to, params string[] messages);
 
-
-    /// <summary>
-    /// Retrieve image, video, and audio data sent by users as Stream
-    /// https://developers.line.me/en/docs/messaging-api/reference/#get-content
-    /// </summary>
-    /// <param name="messageId">Message ID</param>
-    /// <returns>Content as ContentStream</returns>
-    Task<ContentStream> GetContentStreamAsync(string messageId);
-
     /// <summary>
     /// Retrieve image, video, and audio data sent by users as byte array
     /// https://developers.line.me/en/docs/messaging-api/reference/#get-content

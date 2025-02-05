@@ -7,6 +7,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- Core -->
+    <PackageVersion Include="FluentValidation" Version="11.11.0" />
     <PackageVersion Include="JetBrains.Annotations" Version="2024.3.0" />
     <PackageVersion Include="MinVer" Version="6.0.0" />
     <PackageVersion Include="RZ.Foundation" Version="7.0.0-beta.61" />

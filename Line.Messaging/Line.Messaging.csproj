@@ -21,6 +21,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="MinVer">
       <PrivateAssets>all</PrivateAssets>

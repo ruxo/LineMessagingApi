@@ -34,7 +34,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task ReplyMessageAsync(string replyToken, IEnumerable<ISendMessage> messages);
+    Task ReplyMessageAsync(string replyToken, IEnumerable<Message> messages);
 
     /// <summary>
     /// Respond to events from users, groups, and rooms
@@ -58,7 +58,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task PushMessageAsync(string to, IEnumerable<ISendMessage> messages);
+    Task PushMessageAsync(string to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.
@@ -84,7 +84,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<ISendMessage> messages);
+    Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send push messages to multiple users at any time.

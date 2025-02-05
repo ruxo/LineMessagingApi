@@ -19,7 +19,7 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     public Task<BotInfo> GetBotInfo()
         => http.GetLineJsonAsync<BotInfo>("bot/info");
 
-    public Task ReplyMessageAsync(string replyToken, IEnumerable<ISendMessage> messages)
+    public Task ReplyMessageAsync(string replyToken, IEnumerable<Message> messages)
         => http.PostAsJsonAsync("bot/message/reply", new { replyToken, messages }, LineJson.Options)
                  .EnsureSuccessStatusCodeAsync();
 
@@ -30,7 +30,7 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
         => http.PostAsJsonAsync("bot/message/reply", new { replyToken, messages = messages.Join(", ") }, LineJson.Options)
                  .EnsureSuccessStatusCodeAsync();
 
-    public Task PushMessageAsync(string to, IEnumerable<ISendMessage> messages)
+    public Task PushMessageAsync(string to, IEnumerable<Message> messages)
         => http.PostAsJsonAsync("bot/message/push", new { to, messages }, LineJson.Options)
                  .EnsureSuccessStatusCodeAsync();
 
@@ -41,7 +41,7 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     public Task PushMessageAsync(string to, params string[] messages)
         => PushMessageAsync(to, messages.Select(msg => new TextMessage{ Text = msg }));
 
-    public Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<ISendMessage> messages)
+    public Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages)
         => http.PostAsJsonAsync("bot/message/multicast", new { to, messages }, LineJson.Options)
                  .EnsureSuccessStatusCodeAsync();
 

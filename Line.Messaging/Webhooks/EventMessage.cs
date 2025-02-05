@@ -10,6 +10,10 @@ namespace Line.Messaging.Webhooks;
 [JsonDerivedType(typeof(TextEventMessage), "text")]
 [JsonDerivedType(typeof(FileEventMessage), "file")]
 [JsonDerivedType(typeof(LocationEventMessage), "location")]
+[JsonDerivedType(typeof(ImageEventMessage), "image")]
+[JsonDerivedType(typeof(VideoEventMessage), "video")]
+[JsonDerivedType(typeof(AudioEventMessage), "audio")]
+[JsonDerivedType(typeof(StickerEventMessage), "sticker")]
 public class EventMessage
 {
     /// <summary>
@@ -20,5 +24,8 @@ public class EventMessage
     /// <summary>
     /// EventMessageType
     /// </summary>
+    [JsonIgnore]
     public EventMessageType Type { get; init; }
+
+    public string? QuoteToken { get; init; }
 }

@@ -29,6 +29,7 @@ public abstract class WebhookEvent
     /// <summary>
     /// Identifier for the type of event
     /// </summary>
+    [JsonIgnore]
     public WebhookEventType Type { get; init; }
 
     /// <summary>

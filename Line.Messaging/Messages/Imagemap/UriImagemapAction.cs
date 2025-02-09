@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Object which specifies the actions and tappable regions of an imagemap.

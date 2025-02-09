@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using JetBrains.Annotations;
-
-namespace Line.Messaging.Webhooks;
+﻿namespace Line.Messaging.Webhooks;
 
 /// <summary>
 /// Inherit this class to implement LINE Bot. Then override each event handler.

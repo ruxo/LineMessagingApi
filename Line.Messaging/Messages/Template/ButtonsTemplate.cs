@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Template message with an image, title, text, and multiple action buttons.

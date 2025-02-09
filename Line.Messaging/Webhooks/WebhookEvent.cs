@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using FluentValidation;
 using RZ.Foundation.Types;
 
 namespace Line.Messaging.Webhooks;
@@ -28,6 +29,7 @@ public abstract class WebhookEvent
     /// <summary>
     /// Identifier for the type of event
     /// </summary>
+    [JsonIgnore]
     public WebhookEventType Type { get; init; }
 
     /// <summary>
@@ -44,9 +46,23 @@ public abstract class WebhookEvent
     /// </summary>
     public long Timestamp { get; init; }
 
-    public static Outcome<WebhookEvent> CreateFrom(string jsonText) {
+    public static Outcome<WebhookEvent> TryParse(string jsonText) {
         var (error, @event) = Try(jsonText, s => JsonSerializer.Deserialize<WebhookEvent>(s, LineJson.Options));
         return error is null ? @event! : ErrorFrom.Exception(error);
+    }
+
+    public static readonly IValidator<WebhookEvent> Validator = new ValidatorType();
+
+    public class ValidatorType : AbstractValidator<WebhookEvent>
+    {
+        public ValidatorType() {
+            RuleFor(x => x.WebhookEventId).NotEmpty();
+            RuleFor(x => x.Type).IsInEnum();
+            RuleFor(x => x.Source).NotNull().SetValidator(WebhookEventSource.Validator);
+            RuleFor(x => x.Mode).NotEmpty();
+            RuleFor(x => x.DeliveryContext).NotNull();
+            RuleFor(x => x.Timestamp).GreaterThan(0);
+        }
     }
 }
 

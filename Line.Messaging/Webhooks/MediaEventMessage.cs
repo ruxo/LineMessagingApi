@@ -5,13 +5,33 @@
 /// </summary>
 public class MediaEventMessage : EventMessage
 {
-    /// <summary>
-    /// ContentProvider
-    /// </summary>
     public required ContentProvider ContentProvider { get; init; }
+}
 
-    /// <summary>
-    /// Length of media file (milliseconds)
-    /// </summary>
-    public int? Duration { get; init; }
+public class ImageEventMessage : MediaEventMessage
+{
+    public ImageEventMessage()
+    {
+        Type = EventMessageType.Image;
+    }
+}
+
+public class VideoEventMessage : MediaEventMessage
+{
+    public int Duration { get; init; }
+
+    public VideoEventMessage()
+    {
+        Type = EventMessageType.Video;
+    }
+}
+
+public class AudioEventMessage : MediaEventMessage
+{
+    public int Duration { get; init; }
+
+    public AudioEventMessage()
+    {
+        Type = EventMessageType.Audio;
+    }
 }

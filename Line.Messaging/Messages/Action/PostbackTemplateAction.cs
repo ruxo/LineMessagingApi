@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// When a control associated with this action is tapped, a postback event is returned via webhook with the specified string in the data field.

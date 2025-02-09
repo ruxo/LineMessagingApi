@@ -9,6 +9,10 @@ public class StickerEventMessage : EventMessage
 
     public required string StickerId { get; init; }
 
+    public required string StickerResourceType { get; init; }
+
+    public required string[] Keywords { get; init; }
+
     public StickerEventMessage()
     {
         Type = EventMessageType.Sticker;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Provide URLs of the LINE URL scheme.
@@ -8,59 +6,59 @@ namespace Line.Messaging
     /// </summary>
     public static class LineSchemeUrl
     {
-        private static readonly string camera = "line://nv/camera/";
-        private static readonly string cameraRollSingle = "line://nv/cameraRoll/single";
-        private static readonly string cameraRollMulti = "line://nv/cameraRoll/multi";
-        private static readonly string location = "line://nv/location";
-        private static readonly string tiP = "line://ti/p/{0}";
-        private static readonly string recommendOA = "line://nv/recommendOA/{0}";
-        private static readonly string homePublicMain = "line://home/public/main?id={0}";
-        private static readonly string homePublicProfile = "line://home/public/profile?id={0}";
-        private static readonly string homePublicPost = "line://home/public/post?id={0}&postId={1}";
-        private static readonly string msgText = "line://msg/text/{0}";
-        private static readonly string oaMessage = "line://oaMessage/{0}/?{1}";
-        private static readonly string profile = "line://nv/profile";
-        private static readonly string profileSetId = "line://nv/profileSetId";
-        private static readonly string chat = "line://nv/chat";
-        private static readonly string timeline = "line://nv/timeline";
-        private static readonly string more = "line://nv/more";
-        private static readonly string addFriends = "line://nv/addFriends";
-        private static readonly string officialAccounts = "line://nv/officialAccounts";
-        private static readonly string settings = "line://nv/settings";
-        private static readonly string settingsAccount = "line://nv/settings/account";
-        private static readonly string connectedApps = "line://nv/connectedApps";
-        private static readonly string connectedDevices = "line://nv/connectedDevices";
-        private static readonly string settingsPrivacy = "line://nv/settings/privacy";
-        private static readonly string settingsAddressBookSync = "line://nv/settings/addressBookSync";
-        private static readonly string settingsSticker = "line://nv/settings/sticker";
-        private static readonly string stickerShopMySticker = "line://nv/stickerShop/mySticker";
-        private static readonly string settingsThemeIos = "line://nv/themeSettingsMenu";
-        private static readonly string settingsThemeAndroid = "line://nv/settings/theme";
-        private static readonly string themeSettings = "line://nv/themeSettings";
-        private static readonly string notificationsServiceDetail = "line://nv/notificationServiceDetail";
-        private static readonly string settingsChatSettings = "line://nv/settings/chatSettings";
-        private static readonly string suggestSettings = "line://nv/suggestSettings";
-        private static readonly string settingsCallSettings = "line://nv/settings/callSettings";
-        private static readonly string settingsTimelineSettings = "line://nv/settings/timelineSettings";
-        private static readonly string shopStickerDetail = "line://shop/sticker/detail/{0}";
-        private static readonly string shopCategory = "line://shop/category/{0}";
-        private static readonly string shopStickerAuthor = "line://shop/sticker/author/{0}";
-        private static readonly string stickerShop = "line://nv/stickerShop";
-        private static readonly string shopStickerNew = "line://shop/sticker/new";
-        private static readonly string shopStikerHot = "line://shop/sticker/hot";
-        private static readonly string shopStickerEvent = "line://shop/sticker/event";
-        private static readonly string shopStickerCategory = "line://shop/sticker/category";
-        private static readonly string sSticker = "line://S/sticker/{0}";
-        private static readonly string sShopStickerAuthor = "line://S/shop/sticker/author/{0}";
-        private static readonly string shopThemeDetail = "line://shop/theme/detail?id={0}";
-        private static readonly string sShopThemeDetail = "line://S/shop/theme/detail?id={0}";
-        private static readonly string call = "line://call/{0}/{1}";
-        private static readonly string calls = "line://calls";
-        private static readonly string callDialpad = "line://call/dialpad";
-        private static readonly string callSettings = "line://call/settings";
-        private static readonly string callContacts = "line://call/contacts";
-        private static readonly string callSpot = "line://call/spot";
-        private static readonly string callRedeem = "line://call/redeem";
+        static readonly string camera = "line://nv/camera/";
+        static readonly string cameraRollSingle = "line://nv/cameraRoll/single";
+        static readonly string cameraRollMulti = "line://nv/cameraRoll/multi";
+        static readonly string location = "line://nv/location";
+        static readonly string tiP = "line://ti/p/{0}";
+        static readonly string recommendOA = "line://nv/recommendOA/{0}";
+        static readonly string homePublicMain = "line://home/public/main?id={0}";
+        static readonly string homePublicProfile = "line://home/public/profile?id={0}";
+        static readonly string homePublicPost = "line://home/public/post?id={0}&postId={1}";
+        static readonly string msgText = "line://msg/text/{0}";
+        static readonly string oaMessage = "line://oaMessage/{0}/?{1}";
+        static readonly string profile = "line://nv/profile";
+        static readonly string profileSetId = "line://nv/profileSetId";
+        static readonly string chat = "line://nv/chat";
+        static readonly string timeline = "line://nv/timeline";
+        static readonly string more = "line://nv/more";
+        static readonly string addFriends = "line://nv/addFriends";
+        static readonly string officialAccounts = "line://nv/officialAccounts";
+        static readonly string settings = "line://nv/settings";
+        static readonly string settingsAccount = "line://nv/settings/account";
+        static readonly string connectedApps = "line://nv/connectedApps";
+        static readonly string connectedDevices = "line://nv/connectedDevices";
+        static readonly string settingsPrivacy = "line://nv/settings/privacy";
+        static readonly string settingsAddressBookSync = "line://nv/settings/addressBookSync";
+        static readonly string settingsSticker = "line://nv/settings/sticker";
+        static readonly string stickerShopMySticker = "line://nv/stickerShop/mySticker";
+        static readonly string settingsThemeIos = "line://nv/themeSettingsMenu";
+        static readonly string settingsThemeAndroid = "line://nv/settings/theme";
+        static readonly string themeSettings = "line://nv/themeSettings";
+        static readonly string notificationsServiceDetail = "line://nv/notificationServiceDetail";
+        static readonly string settingsChatSettings = "line://nv/settings/chatSettings";
+        static readonly string suggestSettings = "line://nv/suggestSettings";
+        static readonly string settingsCallSettings = "line://nv/settings/callSettings";
+        static readonly string settingsTimelineSettings = "line://nv/settings/timelineSettings";
+        static readonly string shopStickerDetail = "line://shop/sticker/detail/{0}";
+        static readonly string shopCategory = "line://shop/category/{0}";
+        static readonly string shopStickerAuthor = "line://shop/sticker/author/{0}";
+        static readonly string stickerShop = "line://nv/stickerShop";
+        static readonly string shopStickerNew = "line://shop/sticker/new";
+        static readonly string shopStikerHot = "line://shop/sticker/hot";
+        static readonly string shopStickerEvent = "line://shop/sticker/event";
+        static readonly string shopStickerCategory = "line://shop/sticker/category";
+        static readonly string sSticker = "line://S/sticker/{0}";
+        static readonly string sShopStickerAuthor = "line://S/shop/sticker/author/{0}";
+        static readonly string shopThemeDetail = "line://shop/theme/detail?id={0}";
+        static readonly string sShopThemeDetail = "line://S/shop/theme/detail?id={0}";
+        static readonly string call = "line://call/{0}/{1}";
+        static readonly string calls = "line://calls";
+        static readonly string callDialpad = "line://call/dialpad";
+        static readonly string callSettings = "line://call/settings";
+        static readonly string callContacts = "line://call/contacts";
+        static readonly string callSpot = "line://call/spot";
+        static readonly string callRedeem = "line://call/redeem";
 
         /// <summary>
         /// Opens the camera screen.

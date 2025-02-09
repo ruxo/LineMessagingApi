@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// This action can be configured only with quick reply buttons. When a button associated with this action is tapped, the location screen in the LINE app is opened.

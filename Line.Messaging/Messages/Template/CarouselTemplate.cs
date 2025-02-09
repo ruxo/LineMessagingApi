@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Line.Messaging
+﻿namespace Line.Messaging
 {
     /// <summary>
     /// Template message with multiple columns which can be cycled like a carousel.

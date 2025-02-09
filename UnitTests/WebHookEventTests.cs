@@ -1,6 +1,5 @@
 using FluentAssertions;
 using JetBrains.Annotations;
-using Line.Messaging;
 using Line.Messaging.Webhooks;
 
 namespace UnitTests;

@@ -1,15 +1,17 @@
-﻿namespace Line.Messaging;
+﻿using System.Text.Json.Serialization;
+
+namespace Line.Messaging;
 
 public enum MessageType
 {
-    Text,
-    Image,
-    Video,
-    Audio,
-    Location,
-    Sticker,
-    Imagemap,
-    Template,
-    File,
-    Flex,
+    [JsonStringEnumMemberName("text")] Text,
+    [JsonStringEnumMemberName("image")] Image,
+    [JsonStringEnumMemberName("video")] Video,
+    [JsonStringEnumMemberName("audio")] Audio,
+    [JsonStringEnumMemberName("location")] Location,
+    [JsonStringEnumMemberName("sticker")] Sticker,
+    [JsonStringEnumMemberName("imagemap")] Imagemap,
+    [JsonStringEnumMemberName("template")] Template,
+    [JsonStringEnumMemberName("file")] File,
+    [JsonStringEnumMemberName("flex")] Flex,
 }

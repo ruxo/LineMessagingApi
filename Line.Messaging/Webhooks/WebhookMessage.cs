@@ -8,7 +8,11 @@ namespace Line.Messaging.Webhooks;
 [PublicAPI]
 public class WebhookMessage
 {
+    /// <summary>
+    /// Bot ID of the channel that received the webhook.
+    /// </summary>
     public required string Destination { get; init; }
+
     public required WebhookEvent[] Events { get; init; }
 
     [JsonExtensionData] public IDictionary<string, JsonElement>? ExtraData { get; init; }

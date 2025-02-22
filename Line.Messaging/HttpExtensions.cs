@@ -1,7 +1,8 @@
 ﻿using System.Net.Http.Headers;
 
-namespace Line.Messaging.AspNet;
+namespace Line.Messaging;
 
+[PublicAPI]
 public static class HttpExtensions
 {
     public static HttpClient SetupForLineMessageClient(this HttpClient http, string apiKey) {

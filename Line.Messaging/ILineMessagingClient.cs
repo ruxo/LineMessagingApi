@@ -110,7 +110,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="messageId">Message ID</param>
     /// <returns>Content as byte array</returns>
-    Task<byte[]> GetContentBytesAsync(string messageId);
+    Task<(string MimeType, byte[] Data)> GetContentBytesAsync(string messageId);
 
     #endregion
 

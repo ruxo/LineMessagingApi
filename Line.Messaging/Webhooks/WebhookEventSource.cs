@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Text.Json.Serialization;
+using FluentValidation;
 
 namespace Line.Messaging.Webhooks;
 
@@ -6,6 +7,10 @@ namespace Line.Messaging.Webhooks;
 /// Webhook Event Source. Source could be User, Group or Room.
 /// </summary>
 [PublicAPI]
+[JsonPolymorphic(TypeDiscriminatorPropertyName = "type")]
+[JsonDerivedType(typeof(UserEventSource), "user")]
+[JsonDerivedType(typeof(GroupEventSource), "group")]
+[JsonDerivedType(typeof(RoomEventSource), "room")]
 public class WebhookEventSource
 {
     public EventSourceType Type { get; init; }
@@ -24,4 +29,29 @@ public class WebhookEventSource
             RuleFor(x => x.Type).IsInEnum();
         }
     }
+}
+
+public class UserEventSource : WebhookEventSource
+{
+    public UserEventSource() {
+        Type = EventSourceType.User;
+    }
+}
+
+public class GroupEventSource : WebhookEventSource
+{
+    public GroupEventSource() {
+        Type = EventSourceType.Group;
+    }
+
+    public required string GroupId { get; init; }
+}
+
+public class RoomEventSource : WebhookEventSource
+{
+    public RoomEventSource() {
+        Type = EventSourceType.Room;
+    }
+
+    public string? RoomId { get; init; }
 }

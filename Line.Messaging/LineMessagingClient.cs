@@ -55,10 +55,12 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     public Task MultiCastMessageAsync(IEnumerable<string> to, params string[] messages)
         => MultiCastMessageAsync(to, messages.Select(msg => new TextMessage{ Text = msg }));
 
-    public async Task<byte[]> GetContentBytesAsync(string messageId)
+    public async Task<(string, byte[])> GetContentBytesAsync(string messageId)
     {
         var response = await http.GetAsync($"bot/message/{messageId}/content").EnsureSuccessStatusCodeAsync();
-        return await response.Content.ReadAsByteArrayAsync();
+        var contentType = response.Content.Headers.ContentType?.MediaType ?? "application/octet-stream";
+        var data = await response.Content.ReadAsByteArrayAsync();
+        return (contentType, data);
     }
 
     #endregion

@@ -87,4 +87,29 @@ public class WebHookEventTests
             ]
         });
     }
+
+    [Fact]
+    public void DeserializeGroupJoin() {
+        const string Json = """{"destination":"Uc62c92bf76c1afb8e42d65727e9c00e2","events":[{"type":"join","webhookEventId":"01JRRYMPCWBT8KGGR4K1X8RGN4","deliveryContext":{"isRedelivery":false},"timestamp":1744594163857,"source":{"type":"group","groupId":"Cc2efce7be8f6a1a0409bbf13db3fa56a"},"replyToken":"537f4cde9c394cff99a37cfa004eb967","mode":"active"}]}""";
+
+        var result = WebhookMessage.TryParse(Json);
+
+        result.IsSuccess.Should().BeTrue($"but {result}");
+        result.Data.Should().BeEquivalentTo(new WebhookMessage {
+            Destination = "Uc62c92bf76c1afb8e42d65727e9c00e2",
+            Events = [
+                new JoinEvent {
+                    WebhookEventId = "01JRRYMPCWBT8KGGR4K1X8RGN4",
+                    DeliveryContext = new DeliveryContext(false),
+                    Source = new GroupEventSource {
+                        Type = EventSourceType.Group,
+                        GroupId = "Cc2efce7be8f6a1a0409bbf13db3fa56a"
+                    },
+                    ReplyToken = "537f4cde9c394cff99a37cfa004eb967",
+                    Mode = "active",
+                    Timestamp = 1744594163857
+                }
+            ]
+        });
+    }
 }

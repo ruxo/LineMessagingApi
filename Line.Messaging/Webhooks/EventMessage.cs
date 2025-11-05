@@ -28,4 +28,5 @@ public class EventMessage
     public EventMessageType Type { get; init; }
 
     public string? QuoteToken { get; init; }
+    public string? MarkAsReadToken { get; init; }
 }

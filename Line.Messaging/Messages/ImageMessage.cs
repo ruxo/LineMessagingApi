@@ -34,7 +34,7 @@ public class ImageMessage : Message
     /// Max: 1024 x 1024
     /// Max: 1 MB
     /// </param>
-    /// <param name="previerImageUrl">
+    /// <param name="previewImageUrl">
     /// Preview image URL (Max: 1000 characters)
     /// HTTPS
     /// JPEG
@@ -44,10 +44,10 @@ public class ImageMessage : Message
     /// <param name="quickReply">
     /// QuickReply
     /// </param>
-    public ImageMessage(string originalContentUrl, string previerImageUrl, QuickReply? quickReply = null) {
+    public ImageMessage(string originalContentUrl, string previewImageUrl, QuickReply? quickReply = null) {
         Type = MessageType.Image;
         OriginalContentUrl = originalContentUrl;
-        PreviewImageUrl = previerImageUrl;
+        PreviewImageUrl = previewImageUrl;
         QuickReply = quickReply;
     }
 }

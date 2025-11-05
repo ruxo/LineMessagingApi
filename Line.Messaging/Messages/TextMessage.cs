@@ -6,6 +6,10 @@
 /// </summary>
 public class TextMessage : Message
 {
+    public TextMessage() {
+        Type = MessageType.Text;
+    }
+
     /// <summary>
     /// Message text
     /// Max: 2000 characters

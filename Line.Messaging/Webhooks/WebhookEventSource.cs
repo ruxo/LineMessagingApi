@@ -13,6 +13,7 @@ namespace Line.Messaging.Webhooks;
 [JsonDerivedType(typeof(RoomEventSource), "room")]
 public class WebhookEventSource
 {
+    [JsonIgnore]
     public EventSourceType Type { get; init; }
 
     /// <summary>

@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
     <Authors>pierre3, kenamanu, Ruxo Zheng</Authors>
     <Product>Line Messaging API</Product>
     <Description>SDK for the LINE Messaging API for C#</Description>

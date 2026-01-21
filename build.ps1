@@ -12,9 +12,5 @@ function build {
     Pop-Location
 }
 
-Push-Location ./src
-
 build .\Line.Messaging
 build .\Line.Messaging.AspNet
-
-Pop-Location

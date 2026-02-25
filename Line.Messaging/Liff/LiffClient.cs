@@ -23,11 +23,10 @@ public class LiffClient(HttpClient client)
     /// <returns>
     /// LIFF app ID
     /// </returns>
-    public Task<string> AddLiffAppAsync(ViewType viewType, string url)
-        => client.PostAsJsonAsync("/apps", new { view = new View(viewType, url) }, LineJson.Options)
-                 .EnsureSuccessStatusCodeAsync()
-                 .GetLineJsonAsync<LiffInfo>()
-                 .Select(x => x.LiffId);
+    public async ValueTask<Outcome<string>> AddLiffAppAsync(ViewType viewType, string url)
+        => Fail(await client.PostJson("/apps", new { view = new View(viewType, url) }, LineJson.Options).GetLineJsonAsync<LiffInfo>(), out var e, out var info)
+               ? e.Trace()
+               : info.LiffId;
 
     readonly record struct LiffInfo(string LiffId);
 

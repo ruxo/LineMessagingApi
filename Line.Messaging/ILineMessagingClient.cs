@@ -22,7 +22,7 @@ public record BotInfo(string UserId, string BasicId, string? PremiumId, string D
 public interface ILineMessagingClient {
     #region Bot
 
-    Task<BotInfo> GetBotInfo();
+    ValueTask<Outcome<BotInfo>> GetBotInfo();
 
     #endregion
 
@@ -34,7 +34,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task ReplyMessageAsync(string replyToken, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageAsync(string replyToken, IEnumerable<Message> messages);
 
     /// <summary>
     /// Respond to events from users, groups, and rooms
@@ -42,7 +42,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Reply Text messages. Up to 5 messages.</param>
-    Task ReplyMessageAsync(string replyToken, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>>  ReplyMessageAsync(string replyToken, params string[] messages);
 
     /// <summary>
     /// Respond to events from users, groups, and rooms
@@ -122,7 +122,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">User ID</param>
     /// <returns></returns>
-    Task<UserProfile> GetUserProfileAsync(string userId);
+    ValueTask<Outcome<UserProfile>> GetUserProfileAsync(string userId);
 
     #endregion
 
@@ -137,7 +137,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">Identifier of the user</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>User Profile</returns>
-    Task<UserProfile> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default);
+    ValueTask<Outcome<UserProfile>> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user IDs of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -150,7 +150,7 @@ public interface ILineMessagingClient {
     /// <param name="continuationToken">ContinuationToken</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>GroupMemberIds</returns>
-    Task<GroupMemberIds> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default);
+    ValueTask<Outcome<GroupMemberIds>> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user profiles of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -160,7 +160,7 @@ public interface ILineMessagingClient {
     /// <param name="groupId">Identifier of the group</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>List of UserProfile</returns>
-    IAsyncEnumerable<UserProfile> GetGroupMemberProfilesAsync(string groupId, CancellationToken cancelToken = default);
+    IAsyncEnumerable<Outcome<UserProfile>> GetGroupMemberProfilesAsync(string groupId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Leave a group.
@@ -183,7 +183,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">Identifier of the user</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns></returns>
-    Task<UserProfile> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default);
+    ValueTask<Outcome<UserProfile>> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user IDs of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -195,7 +195,7 @@ public interface ILineMessagingClient {
     /// <param name="continuationToken">ContinuationToken</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>GroupMemberIds</returns>
-    Task<GroupMemberIds> GetRoomMemberIdsAsync(string roomId, string? continuationToken = null, CancellationToken cancelToken = default);
+    ValueTask<Outcome<GroupMemberIds>> GetRoomMemberIdsAsync(string roomId, string? continuationToken = null, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user profiles of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -224,7 +224,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenuId">ID of an uploaded rich menu</param>
     /// <returns>RichMenu</returns>
-    Task<ResponseRichMenu> GetRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<ResponseRichMenu>> GetRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Creates a rich menu.
@@ -234,7 +234,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenu">RichMenu</param>
     /// <returns>RichMenu Id</returns>
-    Task<string> CreateRichMenuAsync(RichMenu richMenu);
+    ValueTask<Outcome<string>> CreateRichMenuAsync(RichMenu richMenu);
 
     /// <summary>
     /// Deletes a rich menu.
@@ -249,7 +249,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">ID of the user</param>
     /// <returns>RichMenu Id</returns>
-    Task<string> GetRichMenuIdOfUserAsync(string userId);
+    ValueTask<Outcome<string>> GetRichMenuIdOfUserAsync(string userId);
 
     /// <summary>
     /// Sets a default rich menu
@@ -327,7 +327,7 @@ public interface ILineMessagingClient {
     /// Returns the status code 200 and a link token. Link tokens are valid for 10 minutes and can only be used once.
     /// Note: The validity period may change without notice.
     /// </returns>
-    Task<string> IssueLinkTokenAsync(string userId);
+    ValueTask<Outcome<string>> IssueLinkTokenAsync(string userId);
 
     #endregion
 
@@ -345,7 +345,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentReplyMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentReplyMessagesAsync(DateTime date);
 
     /// <summary>
     /// Gets the number of messages sent with the /bot/message/push endpoint.
@@ -359,7 +359,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentPushMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentPushMessagesAsync(DateTime date);
 
     /// <summary>
     /// Gets the number of messages sent with the /bot/message/push endpoint.
@@ -373,7 +373,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentMulticastMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentMulticastMessagesAsync(DateTime date);
 
     #endregion
 }

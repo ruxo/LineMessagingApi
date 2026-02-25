@@ -1,7 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
-using LanguageExt;
 
 namespace Line.Messaging;
 
@@ -16,14 +15,13 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     #region Message
     // https://developers.line.me/en/docs/messaging-api/reference/#message
 
-    public Task<BotInfo> GetBotInfo()
+    public ValueTask<Outcome<BotInfo>> GetBotInfo()
         => http.GetLineJsonAsync<BotInfo>("bot/info");
 
-    public Task ReplyMessageAsync(string replyToken, IEnumerable<Message> messages)
-        => http.PostAsJsonAsync("bot/message/reply", new { replyToken, messages }, LineJson.Options)
-                 .EnsureSuccessStatusCodeAsync();
+    public ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageAsync(string replyToken, IEnumerable<Message> messages)
+        => http.PostJson("bot/message/reply", new { replyToken, messages }, LineJson.Options).CheckSucceed();
 
-    public Task ReplyMessageAsync(string replyToken, params string[] messages)
+    public ValueTask<Outcome<LanguageExt.Unit>>  ReplyMessageAsync(string replyToken, params string[] messages)
         => ReplyMessageAsync(replyToken, from msg in messages select new TextMessage{ Text = msg });
 
     public Task ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
@@ -68,7 +66,7 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     #region Profile
     // https://developers.line.me/en/docs/messaging-api/reference/#profile
 
-    public Task<UserProfile> GetUserProfileAsync(string userId)
+    public ValueTask<Outcome<UserProfile>> GetUserProfileAsync(string userId)
         => http.GetLineJsonAsync<UserProfile>($"bot/profile/{userId}");
 
     #endregion
@@ -76,25 +74,27 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     #region Group
     // https://developers.line.me/en/docs/messaging-api/reference/#group
 
-    public Task<UserProfile> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default)
+    public ValueTask<Outcome<UserProfile>> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default)
         => http.GetLineJsonAsync<UserProfile>($"bot/group/{groupId}/member/{userId}", cancelToken);
 
-    public Task<GroupMemberIds> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default)
+    public ValueTask<Outcome<GroupMemberIds>> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default)
         => http.GetLineJsonAsync<GroupMemberIds>($"bot/group/{groupId}/members/ids" + (continuationToken is null ? string.Empty : $"?start={continuationToken}"), cancelToken);
 
-    public async IAsyncEnumerable<UserProfile> GetGroupMemberProfilesAsync(string groupId, [EnumeratorCancellation] CancellationToken cancelToken)
+    public async IAsyncEnumerable<Outcome<UserProfile>> GetGroupMemberProfilesAsync(string groupId, [EnumeratorCancellation] CancellationToken cancelToken)
     {
         string? continuationToken = null;
-        do
-        {
-            var ids = await GetGroupMemberIdsAsync(groupId, continuationToken, cancelToken);
+        do{
+            if (Fail(await GetGroupMemberIdsAsync(groupId, continuationToken, cancelToken).ConfigureAwait(false), out var e, out var ids)){
+                yield return e.Trace();
+                yield break;
+            }
 
-            var tasks = ids.MemberIds.Select(userId => GetGroupMemberProfileAsync(groupId, userId, cancelToken));
-            var profiles = await Task.WhenAll(tasks.ToArray());
-
-            foreach (var profile in profiles)
-                yield return profile;
-
+            foreach (var userId in ids.MemberIds){
+                if (Fail(await GetGroupMemberProfileAsync(groupId, userId, cancelToken).ConfigureAwait(false), out e, out var profile))
+                    yield return e.Trace();
+                else
+                    yield return profile;
+            }
             continuationToken = ids.Next;
         }
         while (continuationToken is not null);
@@ -108,10 +108,10 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     #region Room
     // https://developers.line.me/en/docs/messaging-api/reference/#room
 
-    public Task<UserProfile> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default)
+    public ValueTask<Outcome<UserProfile>> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default)
         => http.GetLineJsonAsync<UserProfile>($"bot/room/{roomId}/member/{userId}", cancelToken);
 
-    public Task<GroupMemberIds> GetRoomMemberIdsAsync(string roomId, string? continuationToken, CancellationToken cancelToken = default)
+    public ValueTask<Outcome<GroupMemberIds>> GetRoomMemberIdsAsync(string roomId, string? continuationToken, CancellationToken cancelToken = default)
         => http.GetLineJsonAsync<GroupMemberIds>($"bot/room/{roomId}/members/ids" + (continuationToken is null ? string.Empty : $"?start={continuationToken}"), cancelToken);
 
     public async IAsyncEnumerable<UserProfile> GetRoomMemberProfilesAsync(string roomId, [EnumeratorCancellation] CancellationToken cancelToken)
@@ -119,16 +119,20 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
         string? continuationToken = null;
         do
         {
-            var ids = await GetRoomMemberIdsAsync(roomId, continuationToken, cancelToken);
+            if (Fail(await GetRoomMemberIdsAsync(roomId, continuationToken, cancelToken), out var idsError, out var ids))
+                throw new InvalidOperationException(idsError.Message);
 
-            var tasks = ids.MemberIds.Select(userId => GetRoomMemberProfileAsync(roomId, userId, cancelToken));
-            var profiles = await Task.WhenAll(tasks.ToArray());
+            var tasks = ids.MemberIds.Select(userId => GetRoomMemberProfileAsync(roomId, userId, cancelToken).AsTask());
+            var outcomes = await Task.WhenAll(tasks.ToArray());
 
-            foreach (var profile in profiles)
+            foreach (var outcome in outcomes) {
+                if (Fail(outcome, out var profileError, out var profile))
+                    throw new InvalidOperationException(profileError.Message);
                 if (cancelToken.IsCancellationRequested)
                     yield break;
                 else
                     yield return profile;
+            }
 
             continuationToken = ids.Next;
         }
@@ -143,23 +147,24 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     #region Rich menu
     // https://developers.line.me/en/docs/messaging-api/reference/#rich-menu
 
-    public Task<ResponseRichMenu> GetRichMenuAsync(string richMenuId)
+    public ValueTask<Outcome<ResponseRichMenu>> GetRichMenuAsync(string richMenuId)
         => http.GetLineJsonAsync<ResponseRichMenu>($"bot/richmenu/{richMenuId}");
 
-    public Task<string> CreateRichMenuAsync(RichMenu richMenu)
-        => http.PostAsJsonAsync("bot/richmenu", richMenu, LineJson.Options)
-                 .GetLineJsonAsync<RichMenuInfo>()
-                 .Select(x => x.RichMenuId);
+    public async ValueTask<Outcome<string>> CreateRichMenuAsync(RichMenu richMenu)
+        => Fail(await http.PostJson("bot/richmenu", richMenu, LineJson.Options).GetLineJsonAsync<RichMenuInfo>(), out var e, out var info)
+               ? e.Trace()
+               : info.RichMenuId;
 
     readonly record struct RichMenuInfo(string RichMenuId);
 
     public Task DeleteRichMenuAsync(string richMenuId)
         => http.DeleteAsync("bot/richmenu/{richMenuId}").EnsureSuccessStatusCodeAsync();
 
-    public Task<string> GetRichMenuIdOfUserAsync(string userId)
-        => http.GetAsync($"bot/user/{userId}/richmenu")
-                 .GetLineJsonAsync<RichMenuInfo>()
-                 .Select(x => x.RichMenuId);
+    public async ValueTask<Outcome<string>> GetRichMenuIdOfUserAsync(string userId) {
+        if (Fail(await http.GetLineJsonAsync<RichMenuInfo>($"bot/user/{userId}/richmenu"), out var e, out var info))
+            return e.Trace();
+        return info.RichMenuId;
+    }
 
     public Task SetDefaultRichMenuAsync(string richMenuId)
         => http.PostAsync($"bot/user/all/richmenu/{richMenuId}", content: null).EnsureSuccessStatusCodeAsync();
@@ -201,10 +206,10 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
 
     #region Account Link
 
-    public Task<string> IssueLinkTokenAsync(string userId)
-        => http.PostAsync($"bot/user/{userId}/linkToken", content: null)
-                 .GetLineJsonAsync<LinkTokenInfo>()
-                 .Select(x => x.LinkToken);
+    public async ValueTask<Outcome<string>> IssueLinkTokenAsync(string userId)
+        => Fail(await http.Post($"bot/user/{userId}/linkToken", content: null).GetLineJsonAsync<LinkTokenInfo>(), out var e, out var info)
+               ? e.Trace()
+               : info.LinkToken;
 
     readonly record struct LinkTokenInfo(string LinkToken);
 
@@ -212,13 +217,13 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
 
     #region Number of sent messages
 
-    public Task<NumberOfSentMessages> GetNumberOfSentReplyMessagesAsync(DateTime date)
+    public ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentReplyMessagesAsync(DateTime date)
         => http.GetLineJsonAsync<NumberOfSentMessages>($"bot/message/delivery/reply?date={date:yyyyMMdd}");
 
-    public Task<NumberOfSentMessages> GetNumberOfSentPushMessagesAsync(DateTime date)
+    public ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentPushMessagesAsync(DateTime date)
         => http.GetLineJsonAsync<NumberOfSentMessages>($"bot/message/delivery/push?date={date:yyyyMMdd}");
 
-    public Task<NumberOfSentMessages> GetNumberOfSentMulticastMessagesAsync(DateTime date)
+    public ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentMulticastMessagesAsync(DateTime date)
         => http.GetLineJsonAsync<NumberOfSentMessages>($"bot/message/delivery/multicast?date={date:yyyyMMdd}");
 
     #endregion

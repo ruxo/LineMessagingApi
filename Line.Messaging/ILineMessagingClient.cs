@@ -58,7 +58,8 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages);
+    /// <param name="cancel">Cancellation Token</param>
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages, CancellationToken cancel = default);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.

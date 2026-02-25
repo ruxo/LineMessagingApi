@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using RZ.Foundation.Helpers;
 using RZ.Foundation.Types;
+using LanguageExt;
 
 namespace Line.Messaging.AspNet;
 
@@ -20,7 +21,7 @@ public static class LineMessagingConfiguration
         var kv = KeyValueString.Parse(lineConfig);
 
         // Currently support only the channel API key.
-        var apiKey = kv.Get("apiKey").ToNullable() ?? throw new ErrorInfoException(StandardErrorCodes.MissingConfiguration, "Line API key is missing");
+        var apiKey = kv.TryGetValue("apiKey").ToNullable() ?? throw new ErrorInfoException(StandardErrorCodes.MissingConfiguration, "Line API key is missing");
 
         services.AddHttpClient<LineMessagingClient>(opts => {
             opts.BaseAddress = new Uri(LineMessagingClient.OfficialUri);

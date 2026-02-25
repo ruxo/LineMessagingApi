@@ -11,6 +11,8 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
 {
     public const string OfficialUri = "https://api.line.me/v2/";
 
+    const int MaxMessageBatchSize = 5;
+
     #region Message
 
     // https://developers.line.me/en/docs/messaging-api/reference/#message
@@ -27,8 +29,12 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
     public ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
         => http.PostJson("bot/message/reply", new { replyToken, messages = messages.Join(", ") }, LineJson.Options).CheckSucceed();
 
-    public ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages)
-        => http.PostJson("bot/message/push", new { to, messages }, LineJson.Options).CheckSucceed();
+    public async ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages, CancellationToken cancel = default) {
+        foreach(var messageBlocks in messages.Batch(MaxMessageBatchSize))
+            if (Fail(await http.PostJson("bot/message/push", new { to, messages = messageBlocks.AsArray() }, LineJson.Options, cancel).CheckSucceed(), out var e))
+                return e.Trace("Push message failed");
+        return unit;
+    }
 
     public ValueTask<Outcome<LanguageExt.Unit>> PushMessageWithJsonAsync(string to, params string[] messages)
         => http.PostJson("bot/message/push", new { to, messages = messages.Join(", ") }, LineJson.Options).CheckSucceed();

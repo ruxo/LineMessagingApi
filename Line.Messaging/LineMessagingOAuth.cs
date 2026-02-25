@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Text.Json;
+using RZ.Foundation.Types;
 
 namespace Line.Messaging;
 
@@ -14,6 +15,7 @@ public static class LineMessagingOAuth
     }
 
     #region OAuth
+
     // https://developers.line.me/en/docs/messaging-api/reference/#oauth
 
     /// <summary>
@@ -25,19 +27,14 @@ public static class LineMessagingOAuth
     /// <param name="channelId">ChannelId</param>
     /// <param name="channelAccessToken">ChannelAccessToken</param>
     /// <returns>ChannelAccessToken</returns>
-    public static async Task<ChannelAccessToken> IssueChannelAccessTokenAsync(this HttpClient httpClient, string channelId, string channelAccessToken)
-    {
-        var response = await httpClient.PostAsync("/oauth/accessToken",
-                                                  new FormUrlEncodedContent(new Dictionary<string, string>
-                                                  {
-                                                      ["grant_type"] = "client_credentials",
-                                                      ["client_id"] = channelId,
-                                                      ["client_secret"] = channelAccessToken
-                                                  })).ConfigureAwait(false);
-        await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
-        var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-        return JsonSerializer.Deserialize<ChannelAccessToken>(json, SnakeCaseOptions)!;
-    }
+    public static ValueTask<Outcome<ChannelAccessToken>> IssueChannelAccessTokenAsync(this HttpClient httpClient, string channelId, string channelAccessToken)
+        => httpClient.Post("/oauth/accessToken",
+                           new FormUrlEncodedContent(new Dictionary<string, string> {
+                               ["grant_type"] = "client_credentials",
+                               ["client_id"] = channelId,
+                               ["client_secret"] = channelAccessToken
+                           }))
+                     .DeserializedJson<ChannelAccessToken>(SnakeCaseOptions);
 
     static readonly JsonSerializerOptions SnakeCaseOptions = new(LineJson.Options) {
         PropertyNamingPolicy = JsonNamingPolicy.SnakeCaseLower
@@ -49,22 +46,28 @@ public static class LineMessagingOAuth
     /// </summary>
     /// <param name="httpClient">HttpClient</param>
     /// <param name="channelAccessToken">ChannelAccessToken</param>
-    public static async Task RevokeChannelAccessTokenAsync(this HttpClient httpClient, string channelAccessToken)
-    {
-        var response = await httpClient.PostAsync("/oauth/revoke",
-                                                  new FormUrlEncodedContent(new Dictionary<string, string>
-                                                  {
-                                                      ["access_token"] = channelAccessToken
-                                                  })).ConfigureAwait(false);
-        await response.EnsureSuccessStatusCodeAsync().ConfigureAwait(false);
+    public static async ValueTask<Outcome<LanguageExt.Unit>> RevokeChannelAccessTokenAsync(this HttpClient httpClient, string channelAccessToken) {
+        if (Fail(await httpClient.Post("/oauth/revoke",
+                                       new FormUrlEncodedContent(new Dictionary<string, string> {
+                                           ["access_token"] = channelAccessToken
+                                       })).ConfigureAwait(false),
+                 out var e, out var response)) return e.Trace();
+
+        using (response)
+            return response.IsSuccessStatusCode
+                       ? unit
+                       : new ErrorInfo(StandardErrorCodes.HttpError,
+                                       "Revoke failed",
+                                       debugInfo: Success(await response.ReadString().ConfigureAwait(false), out var content) ? content : null);
     }
 
     /// <summary>
     /// Instantiate LineMessagingClient by using OAuth.
     /// https://developers.line.me/en/docs/messaging-api/reference/#oauth
     /// </summary>
-    public static async Task<LineMessagingClient> CreateAsync(HttpClient client, string channelId, string channelSecret) {
-        var accessToken = await client.IssueChannelAccessTokenAsync(channelId, channelSecret);
+    public static async ValueTask<Outcome<LineMessagingClient>> CreateAsync(HttpClient client, string channelId, string channelSecret) {
+        if (Fail(await client.IssueChannelAccessTokenAsync(channelId, channelSecret).ConfigureAwait(false), out var e, out var accessToken)) return e.Trace();
+
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken.AccessToken);
         return new LineMessagingClient(client);
     }

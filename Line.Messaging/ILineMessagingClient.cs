@@ -22,7 +22,7 @@ public record BotInfo(string UserId, string BasicId, string? PremiumId, string D
 public interface ILineMessagingClient {
     #region Bot
 
-    Task<BotInfo> GetBotInfo();
+    ValueTask<Outcome<BotInfo>> GetBotInfo();
 
     #endregion
 
@@ -34,7 +34,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task ReplyMessageAsync(string replyToken, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageAsync(string replyToken, IEnumerable<Message> messages);
 
     /// <summary>
     /// Respond to events from users, groups, and rooms
@@ -42,7 +42,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Reply Text messages. Up to 5 messages.</param>
-    Task ReplyMessageAsync(string replyToken, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>>  ReplyMessageAsync(string replyToken, params string[] messages);
 
     /// <summary>
     /// Respond to events from users, groups, and rooms
@@ -50,7 +50,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task ReplyMessageWithJsonAsync(string replyToken, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.
@@ -58,7 +58,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task PushMessageAsync(string to, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.
@@ -66,7 +66,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task PushMessageWithJsonAsync(string to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageWithJsonAsync(string to, params string[] messages);
 
 
     /// <summary>
@@ -75,7 +75,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply text messages. Up to 5 messages.</param>
-    Task PushMessageAsync(string to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, params string[] messages);
 
     /// <summary>
     /// Send push messages to multiple users at any time.
@@ -84,7 +84,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send push messages to multiple users at any time.
@@ -93,7 +93,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task MultiCastMessageWithJsonAsync(IEnumerable<string> to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageWithJsonAsync(IEnumerable<string> to, params string[] messages);
 
     /// <summary>
     /// Send push text messages to multiple users at any time.
@@ -102,7 +102,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Reply text messages. Up to 5 messages.</param>
-    Task MultiCastMessageAsync(IEnumerable<string> to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageAsync(IEnumerable<string> to, params string[] messages);
 
     /// <summary>
     /// Retrieve image, video, and audio data sent by users as byte array
@@ -110,7 +110,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="messageId">Message ID</param>
     /// <returns>Content as byte array</returns>
-    Task<(string MimeType, byte[] Data)> GetContentBytesAsync(string messageId);
+    ValueTask<Outcome<(string MimeType, byte[] Data)>> GetContentBytesAsync(string messageId);
 
     #endregion
 
@@ -122,7 +122,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">User ID</param>
     /// <returns></returns>
-    Task<UserProfile> GetUserProfileAsync(string userId);
+    ValueTask<Outcome<UserProfile>> GetUserProfileAsync(string userId);
 
     #endregion
 
@@ -137,7 +137,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">Identifier of the user</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>User Profile</returns>
-    Task<UserProfile> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default);
+    ValueTask<Outcome<UserProfile>> GetGroupMemberProfileAsync(string groupId, string userId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user IDs of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -150,7 +150,7 @@ public interface ILineMessagingClient {
     /// <param name="continuationToken">ContinuationToken</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>GroupMemberIds</returns>
-    Task<GroupMemberIds> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default);
+    ValueTask<Outcome<GroupMemberIds>> GetGroupMemberIdsAsync(string groupId, string? continuationToken, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user profiles of the members of a group that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -160,7 +160,7 @@ public interface ILineMessagingClient {
     /// <param name="groupId">Identifier of the group</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>List of UserProfile</returns>
-    IAsyncEnumerable<UserProfile> GetGroupMemberProfilesAsync(string groupId, CancellationToken cancelToken = default);
+    IAsyncEnumerable<Outcome<UserProfile>> GetGroupMemberProfilesAsync(string groupId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Leave a group.
@@ -169,7 +169,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="groupId">Group ID</param>
     /// <returns></returns>
-    Task LeaveFromGroupAsync(string groupId);
+    ValueTask<Outcome<LanguageExt.Unit>> LeaveFromGroupAsync(string groupId);
 
     #endregion
 
@@ -183,7 +183,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">Identifier of the user</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns></returns>
-    Task<UserProfile> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default);
+    ValueTask<Outcome<UserProfile>> GetRoomMemberProfileAsync(string roomId, string userId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user IDs of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -195,7 +195,7 @@ public interface ILineMessagingClient {
     /// <param name="continuationToken">ContinuationToken</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>GroupMemberIds</returns>
-    Task<GroupMemberIds> GetRoomMemberIdsAsync(string roomId, string? continuationToken = null, CancellationToken cancelToken = default);
+    ValueTask<Outcome<GroupMemberIds>> GetRoomMemberIdsAsync(string roomId, string? continuationToken = null, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Gets the user profiles of the members of a room that the bot is in. This includes the user IDs of users who have not added the bot as a friend or has blocked the bot.
@@ -205,14 +205,14 @@ public interface ILineMessagingClient {
     /// <param name="roomId">Identifier of the room</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>List of UserProfiles</returns>
-    IAsyncEnumerable<UserProfile> GetRoomMemberProfilesAsync(string roomId, CancellationToken cancelToken = default);
+    IAsyncEnumerable<Outcome<UserProfile>> GetRoomMemberProfilesAsync(string roomId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Leave a room.
     /// Use the ID that is returned via webhook from the source room.
     /// </summary>
     /// <param name="roomId">Room ID</param>
-    Task LeaveFromRoomAsync(string roomId);
+    ValueTask<Outcome<LanguageExt.Unit>> LeaveFromRoomAsync(string roomId);
 
     #endregion
 
@@ -224,7 +224,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenuId">ID of an uploaded rich menu</param>
     /// <returns>RichMenu</returns>
-    Task<ResponseRichMenu> GetRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<ResponseRichMenu>> GetRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Creates a rich menu.
@@ -234,14 +234,14 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenu">RichMenu</param>
     /// <returns>RichMenu Id</returns>
-    Task<string> CreateRichMenuAsync(RichMenu richMenu);
+    ValueTask<Outcome<string>> CreateRichMenuAsync(RichMenu richMenu);
 
     /// <summary>
     /// Deletes a rich menu.
     /// https://developers.line.me/en/docs/messaging-api/reference/#delete-rich-menu
     /// </summary>
     /// <param name="richMenuId">RichMenu Id</param>
-    Task DeleteRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> DeleteRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Gets the ID of the rich menu linked to a user.
@@ -249,7 +249,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">ID of the user</param>
     /// <returns>RichMenu Id</returns>
-    Task<string> GetRichMenuIdOfUserAsync(string userId);
+    ValueTask<Outcome<string>> GetRichMenuIdOfUserAsync(string userId);
 
     /// <summary>
     /// Sets a default rich menu
@@ -257,7 +257,7 @@ public interface ILineMessagingClient {
     /// <param name="richMenuId">
     /// ID of an uploaded rich menu
     /// </param>
-    Task SetDefaultRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> SetDefaultRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Links a rich menu to a user.
@@ -267,7 +267,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">ID of the user</param>
     /// <param name="richMenuId">ID of an uploaded rich menu</param>
     /// <returns></returns>
-    Task LinkRichMenuToUserAsync(string userId, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> LinkRichMenuToUserAsync(string userId, string richMenuId);
 
     /// <summary>
     /// Unlinks a rich menu from a user.
@@ -275,7 +275,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">ID of the user</param>
     /// <returns></returns>
-    Task UnLinkRichMenuFromUserAsync(string userId);
+    ValueTask<Outcome<LanguageExt.Unit>> UnLinkRichMenuFromUserAsync(string userId);
 
     /// <summary>
     /// Downloads an image associated with a rich menu.
@@ -283,7 +283,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenuId">RichMenu Id</param>
     /// <returns>Image as ContentStream</returns>
-    Task<ContentStream> DownloadRichMenuImageAsync(string richMenuId);
+    ValueTask<Outcome<ContentStream>> DownloadRichMenuImageAsync(string richMenuId);
 
     /// <summary>
     /// Uploads and attaches a jpeg image to a rich menu.
@@ -293,7 +293,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="stream">Jpeg image for the rich menu</param>
     /// <param name="richMenuId">The ID of the rich menu to attach the image to.</param>
-    Task UploadRichMenuJpegImageAsync(Stream stream, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> UploadRichMenuJpegImageAsync(Stream stream, string richMenuId);
 
     /// <summary>
     /// Uploads and attaches a png image to a rich menu.
@@ -303,14 +303,14 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="stream">Png image for the rich menu</param>
     /// <param name="richMenuId">The ID of the rich menu to attach the image to.</param>
-    Task UploadRichMenuPngImageAsync(Stream stream, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> UploadRichMenuPngImageAsync(Stream stream, string richMenuId);
 
     /// <summary>
     /// Gets a list of all uploaded rich menus.
     /// https://developers.line.me/en/docs/messaging-api/reference/#get-rich-menu-list
     /// </summary>
     /// <returns>List of ResponseRichMenu</returns>
-    Task<ResponseRichMenu[]> GetRichMenuListAsync(CancellationToken cancelToken = default);
+    ValueTask<Outcome<ResponseRichMenu[]>> GetRichMenuListAsync(CancellationToken cancelToken = default);
 
     #endregion
 
@@ -327,7 +327,7 @@ public interface ILineMessagingClient {
     /// Returns the status code 200 and a link token. Link tokens are valid for 10 minutes and can only be used once.
     /// Note: The validity period may change without notice.
     /// </returns>
-    Task<string> IssueLinkTokenAsync(string userId);
+    ValueTask<Outcome<string>> IssueLinkTokenAsync(string userId);
 
     #endregion
 
@@ -345,7 +345,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentReplyMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentReplyMessagesAsync(DateTime date);
 
     /// <summary>
     /// Gets the number of messages sent with the /bot/message/push endpoint.
@@ -359,7 +359,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentPushMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentPushMessagesAsync(DateTime date);
 
     /// <summary>
     /// Gets the number of messages sent with the /bot/message/push endpoint.
@@ -373,7 +373,7 @@ public interface ILineMessagingClient {
     /// <returns>
     /// <see cref="Line.Messaging.NumberOfSentMessages"/>
     /// </returns>
-    Task<NumberOfSentMessages> GetNumberOfSentMulticastMessagesAsync(DateTime date);
+    ValueTask<Outcome<NumberOfSentMessages>> GetNumberOfSentMulticastMessagesAsync(DateTime date);
 
     #endregion
 }

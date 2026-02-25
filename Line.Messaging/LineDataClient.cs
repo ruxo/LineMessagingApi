@@ -1,5 +1,6 @@
 ﻿namespace Line.Messaging;
 
+[PublicAPI]
 public interface ILineDataClient
 {
     /// <summary>
@@ -8,16 +9,18 @@ public interface ILineDataClient
     /// </summary>
     /// <param name="messageId">Message ID</param>
     /// <returns>Content as ContentStream</returns>
-    Task<ContentStream> GetContentStreamAsync(string messageId);
+    ValueTask<Outcome<ContentStream>> GetContentStreamAsync(string messageId);
 }
 
 public class LineDataClient(HttpClient http) : ILineDataClient
 {
     public const string OfficialUri = "https://api-data.line.me/v2/";
 
-    public async Task<ContentStream> GetContentStreamAsync(string messageId)
+    public async ValueTask<Outcome<ContentStream>> GetContentStreamAsync(string messageId)
     {
-        var response = await http.GetAsync($"bot/message/{messageId}/content").EnsureSuccessStatusCodeAsync();
-        return new ContentStream(await response.Content.ReadAsStreamAsync(), response.Content.Headers);
+        if (Fail(await http.Get($"bot/message/{messageId}/content").ConfigureAwait(false), out var e, out var response)
+         || Fail(await response.ReadStream().ConfigureAwait(false), out e, out var stream)) return e.Trace();
+
+        return new ContentStream(stream, response.Content.Headers);
     }
 }

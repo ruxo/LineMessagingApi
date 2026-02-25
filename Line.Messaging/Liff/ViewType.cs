@@ -1,23 +1,22 @@
-﻿namespace Line.Messaging.Liff
+﻿namespace Line.Messaging.Liff;
+
+/// <summary>
+/// Size of the LIFF app view. Specify one of the following values
+/// </summary>
+public enum ViewType
 {
     /// <summary>
-    /// Size of the LIFF app view. Specify one of the following values
+    /// 50% of the screen height of the device. This size can be specified only for the chat screen.
     /// </summary>
-    public enum ViewType
-    {
-        /// <summary>
-        /// 50% of the screen height of the device. This size can be specified only for the chat screen.
-        /// </summary>
-        Compact,
+    Compact,
 
-        /// <summary>
-        /// 80% of the screen height of the device. This size can be specified only for the chat screen.
-        /// </summary>
-        Tall,
+    /// <summary>
+    /// 80% of the screen height of the device. This size can be specified only for the chat screen.
+    /// </summary>
+    Tall,
 
-        /// <summary>
-        /// 100% of the screen height of the device. This size can be specified for any screens in the LINE app. 
-        /// </summary>
-        Full
-    }
+    /// <summary>
+    /// 100% of the screen height of the device. This size can be specified for any screens in the LINE app.
+    /// </summary>
+    Full
 }

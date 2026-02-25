@@ -22,7 +22,7 @@ public static class WebHookHelper
         /// <param name="body"></param>
         /// <returns></returns>
         [PublicAPI]
-        public async Task<Outcome<(string Signature, WebhookMessage Message)>> TryGetWebhookMessage(string? body = null) {
+        public async ValueTask<Outcome<(string Signature, WebhookMessage Message)>> TryGetWebhookMessage(string? body = null) {
             if (request.GetLineSignature() is not { } signature)
                 return new ErrorInfo(StandardErrorCodes.InvalidRequest, "Missing LINE signature");
 

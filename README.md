@@ -4,7 +4,7 @@
 
 This is a C# implementation of the [LINE Messaging API](https://developers.line.me/messaging-api/overview).
 
-This is a revamped version of the original library. This library targets .NET 9 and so on.
+This is a revamped version of the original library. This library targets .NET 10.
 
 ## Getting Started
 This repository contains SDK itself, as well as base samples and Visual Studio templates.
@@ -14,16 +14,28 @@ Basically, your can communicate with LINE API by passing `HttpClient` to `LineMe
 
 ## LineMessagingClient Class
 
-This is a class to communicate with LINE Messaging API platform. It uses HttpClient-based asynchronous methods such as followings.
+This is a class to communicate with LINE Messaging API platform. It uses `ValueTask<Outcome<T>>`-based asynchronous methods. All operations return an `Outcome<T>` that is either a success value or a structured error — no exceptions for expected failures.
 
 ```cs
-Task<BotInfo> GetBotInfo()
-Task ReplyMessageAsync(string replyToken, IEnumerable<ISendMessage> messages)
-Task ReplyMessageAsync(string replyToken, params string[] messages)
-Task ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
-Task PushMessageAsync(string to, IEnumerable<ISendMessage> messages)
-Task PushMessageAsync(string to, params string[] messages)
-... (more in `ILineMessagingClient` interface)
+// Bot
+ValueTask<Outcome<BotInfo>> GetBotInfo()
+
+// Messages — Unit signals success with no return value
+ValueTask<Outcome<Unit>> ReplyMessageAsync(string replyToken, IEnumerable<Message> messages)
+ValueTask<Outcome<Unit>> ReplyMessageAsync(string replyToken, params string[] messages)
+ValueTask<Outcome<Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
+ValueTask<Outcome<Unit>> PushMessageAsync(string to, IEnumerable<Message> messages)
+ValueTask<Outcome<Unit>> PushMessageAsync(string to, params string[] messages)
+ValueTask<Outcome<Unit>> MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages)
+ValueTask<Outcome<(string MimeType, byte[] Data)>> GetContentBytesAsync(string messageId)
+
+// Profiles & groups
+ValueTask<Outcome<UserProfile>> GetUserProfileAsync(string userId)
+ValueTask<Outcome<UserProfile>> GetGroupMemberProfileAsync(string groupId, string userId, ...)
+IAsyncEnumerable<Outcome<UserProfile>> GetGroupMemberProfilesAsync(string groupId, ...)
+ValueTask<Outcome<Unit>> LeaveFromGroupAsync(string groupId)
+
+// ... more in ILineMessagingClient
 ```
 
 ## Parse and process Webhook-Events

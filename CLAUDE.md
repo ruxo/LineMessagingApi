@@ -68,11 +68,28 @@ The same pattern applies to `WebhookEvent` and its subtypes (FollowEvent, Messag
 
 ### Error Handling
 
-Uses `Outcome<T>` from `RZ.Foundation` (with `LanguageExt` backing) instead of exceptions for expected failures:
+All async methods return `ValueTask<Outcome<T>>` from `RZ.Foundation` (backed by `LanguageExt`) instead of throwing exceptions for expected failures. Methods with no meaningful return value use `Outcome<LanguageExt.Unit>`.
 
 ```csharp
-if (result.IfSuccess(out var value, out var error)) { ... }
-else if (error.Code == StandardErrorCodes.NotFound) { ... }
+// Consuming an Outcome
+var result = await client.GetUserProfileAsync(userId);
+if (result.IfSuccess(out var profile, out var error))
+{
+    // use profile
+}
+else if (error.Code == StandardErrorCodes.NotFound)
+{
+    // handle not found
+}
+else
+{
+    // handle other errors
+}
+
+// Void-like operations (Unit = success signal)
+var reply = await client.ReplyMessageAsync(replyToken, messages);
+if (!reply.IfSuccess(out _, out var error))
+    logger.LogError("Reply failed: {@Error}", error);
 ```
 
 ### Dependency Injection (ASP.NET Core)

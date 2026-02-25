@@ -50,7 +50,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="replyToken">ReplyToken</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task ReplyMessageWithJsonAsync(string replyToken, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.
@@ -58,7 +58,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task PushMessageAsync(string to, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send messages to a user, group, or room at any time.
@@ -66,7 +66,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task PushMessageWithJsonAsync(string to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageWithJsonAsync(string to, params string[] messages);
 
 
     /// <summary>
@@ -75,7 +75,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">ID of the receiver</param>
     /// <param name="messages">Reply text messages. Up to 5 messages.</param>
-    Task PushMessageAsync(string to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, params string[] messages);
 
     /// <summary>
     /// Send push messages to multiple users at any time.
@@ -84,7 +84,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Reply messages. Up to 5 messages.</param>
-    Task MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages);
 
     /// <summary>
     /// Send push messages to multiple users at any time.
@@ -93,7 +93,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Set reply messages with Json string.</param>
-    Task MultiCastMessageWithJsonAsync(IEnumerable<string> to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageWithJsonAsync(IEnumerable<string> to, params string[] messages);
 
     /// <summary>
     /// Send push text messages to multiple users at any time.
@@ -102,7 +102,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="to">IDs of the receivers. Max: 150 users</param>
     /// <param name="messages">Reply text messages. Up to 5 messages.</param>
-    Task MultiCastMessageAsync(IEnumerable<string> to, params string[] messages);
+    ValueTask<Outcome<LanguageExt.Unit>> MultiCastMessageAsync(IEnumerable<string> to, params string[] messages);
 
     /// <summary>
     /// Retrieve image, video, and audio data sent by users as byte array
@@ -110,7 +110,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="messageId">Message ID</param>
     /// <returns>Content as byte array</returns>
-    Task<(string MimeType, byte[] Data)> GetContentBytesAsync(string messageId);
+    ValueTask<Outcome<(string MimeType, byte[] Data)>> GetContentBytesAsync(string messageId);
 
     #endregion
 
@@ -169,7 +169,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="groupId">Group ID</param>
     /// <returns></returns>
-    Task LeaveFromGroupAsync(string groupId);
+    ValueTask<Outcome<LanguageExt.Unit>> LeaveFromGroupAsync(string groupId);
 
     #endregion
 
@@ -205,14 +205,14 @@ public interface ILineMessagingClient {
     /// <param name="roomId">Identifier of the room</param>
     /// <param name="cancelToken">Cancellation Token</param>
     /// <returns>List of UserProfiles</returns>
-    IAsyncEnumerable<UserProfile> GetRoomMemberProfilesAsync(string roomId, CancellationToken cancelToken = default);
+    IAsyncEnumerable<Outcome<UserProfile>> GetRoomMemberProfilesAsync(string roomId, CancellationToken cancelToken = default);
 
     /// <summary>
     /// Leave a room.
     /// Use the ID that is returned via webhook from the source room.
     /// </summary>
     /// <param name="roomId">Room ID</param>
-    Task LeaveFromRoomAsync(string roomId);
+    ValueTask<Outcome<LanguageExt.Unit>> LeaveFromRoomAsync(string roomId);
 
     #endregion
 
@@ -241,7 +241,7 @@ public interface ILineMessagingClient {
     /// https://developers.line.me/en/docs/messaging-api/reference/#delete-rich-menu
     /// </summary>
     /// <param name="richMenuId">RichMenu Id</param>
-    Task DeleteRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> DeleteRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Gets the ID of the rich menu linked to a user.
@@ -257,7 +257,7 @@ public interface ILineMessagingClient {
     /// <param name="richMenuId">
     /// ID of an uploaded rich menu
     /// </param>
-    Task SetDefaultRichMenuAsync(string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> SetDefaultRichMenuAsync(string richMenuId);
 
     /// <summary>
     /// Links a rich menu to a user.
@@ -267,7 +267,7 @@ public interface ILineMessagingClient {
     /// <param name="userId">ID of the user</param>
     /// <param name="richMenuId">ID of an uploaded rich menu</param>
     /// <returns></returns>
-    Task LinkRichMenuToUserAsync(string userId, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> LinkRichMenuToUserAsync(string userId, string richMenuId);
 
     /// <summary>
     /// Unlinks a rich menu from a user.
@@ -275,7 +275,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="userId">ID of the user</param>
     /// <returns></returns>
-    Task UnLinkRichMenuFromUserAsync(string userId);
+    ValueTask<Outcome<LanguageExt.Unit>> UnLinkRichMenuFromUserAsync(string userId);
 
     /// <summary>
     /// Downloads an image associated with a rich menu.
@@ -283,7 +283,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="richMenuId">RichMenu Id</param>
     /// <returns>Image as ContentStream</returns>
-    Task<ContentStream> DownloadRichMenuImageAsync(string richMenuId);
+    ValueTask<Outcome<ContentStream>> DownloadRichMenuImageAsync(string richMenuId);
 
     /// <summary>
     /// Uploads and attaches a jpeg image to a rich menu.
@@ -293,7 +293,7 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="stream">Jpeg image for the rich menu</param>
     /// <param name="richMenuId">The ID of the rich menu to attach the image to.</param>
-    Task UploadRichMenuJpegImageAsync(Stream stream, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> UploadRichMenuJpegImageAsync(Stream stream, string richMenuId);
 
     /// <summary>
     /// Uploads and attaches a png image to a rich menu.
@@ -303,14 +303,14 @@ public interface ILineMessagingClient {
     /// </summary>
     /// <param name="stream">Png image for the rich menu</param>
     /// <param name="richMenuId">The ID of the rich menu to attach the image to.</param>
-    Task UploadRichMenuPngImageAsync(Stream stream, string richMenuId);
+    ValueTask<Outcome<LanguageExt.Unit>> UploadRichMenuPngImageAsync(Stream stream, string richMenuId);
 
     /// <summary>
     /// Gets a list of all uploaded rich menus.
     /// https://developers.line.me/en/docs/messaging-api/reference/#get-rich-menu-list
     /// </summary>
     /// <returns>List of ResponseRichMenu</returns>
-    Task<ResponseRichMenu[]> GetRichMenuListAsync(CancellationToken cancelToken = default);
+    ValueTask<Outcome<ResponseRichMenu[]>> GetRichMenuListAsync(CancellationToken cancelToken = default);
 
     #endregion
 

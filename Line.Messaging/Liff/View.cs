@@ -1,33 +1,32 @@
-﻿namespace Line.Messaging.Liff
+﻿namespace Line.Messaging.Liff;
+
+/// <summary>
+/// View object which contains the URL and view size of the LIFF app.
+/// </summary>
+public class View
 {
     /// <summary>
-    /// View object which contains the URL and view size of the LIFF app.
+    /// Size of the LIFF app view. Specify one of the following values
     /// </summary>
-    public class View
+    public ViewType Type { get; }
+
+    /// <summary>
+    /// URL of the LIFF app. Must start with HTTPS.
+    /// </summary>
+    public string Url { get; }
+
+    /// <summary>
+    /// Constructor
+    /// </summary>
+    /// <param name="type">
+    /// Size of the LIFF app view. Specify one of the following values
+    /// </param>
+    /// <param name="url">
+    /// URL of the LIFF app. Must start with HTTPS.
+    /// </param>
+    public View(ViewType type, string url)
     {
-        /// <summary>
-        /// Size of the LIFF app view. Specify one of the following values
-        /// </summary>
-        public ViewType Type { get; }
-
-        /// <summary>
-        /// URL of the LIFF app. Must start with HTTPS.
-        /// </summary>
-        public string Url { get; }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="type">
-        /// Size of the LIFF app view. Specify one of the following values
-        /// </param>
-        /// <param name="url">
-        /// URL of the LIFF app. Must start with HTTPS.
-        /// </param>
-        public View(ViewType type, string url)
-        {
-            Type = type;
-            Url = url;
-        }
+        Type = type;
+        Url = url;
     }
 }

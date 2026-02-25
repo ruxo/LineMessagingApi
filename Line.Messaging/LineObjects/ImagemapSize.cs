@@ -1,35 +1,27 @@
-﻿namespace Line.Messaging
+﻿namespace Line.Messaging;
+
+/// <summary>
+/// Image size.
+/// </summary>
+public class ImagemapSize(int width, int height)
 {
     /// <summary>
-    /// Image size. 
+    /// Default rich menu size
     /// </summary>
-    public class ImagemapSize
-    {
-        /// <summary>
-        /// Default rich menu size
-        /// </summary>
-        public static ImagemapSize RichMenuLong { get; } = new ImagemapSize(2500, 1686);
-        
-        /// <summary>
-        /// Half rich menu size.
-        /// </summary>
-        public static ImagemapSize RichMenuShort { get; } = new ImagemapSize(2500, 843);
+    public static ImagemapSize RichMenuLong { get; } = new ImagemapSize(2500, 1686);
 
-        /// <summary>
-        /// Width
-        /// </summary>
-        public int Width { get; }
+    /// <summary>
+    /// Half rich menu size.
+    /// </summary>
+    public static ImagemapSize RichMenuShort { get; } = new ImagemapSize(2500, 843);
 
-        /// <summary>
-        /// Height
-        /// </summary>
-        public int Height { get; }
+    /// <summary>
+    /// Width
+    /// </summary>
+    public int Width { get; } = width;
 
-        public ImagemapSize(int width, int height)
-        {
-            Width = width;
-            Height = height;
-        }
-    }
+    /// <summary>
+    /// Height
+    /// </summary>
+    public int Height { get; } = height;
 }
-    

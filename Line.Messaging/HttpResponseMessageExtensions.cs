@@ -5,11 +5,6 @@ namespace Line.Messaging;
 
 static class HttpResponseMessageExtensions
 {
-    internal static async Task<HttpResponseMessage> EnsureSuccessStatusCodeAsync(this Task<HttpResponseMessage> task) {
-        var response = await task.ConfigureAwait(false);
-        return await response.EnsureSuccessStatusCodeAsync();
-    }
-
     public static async ValueTask<Outcome<T>> GetLineJsonAsync<T>(this HttpClient client, string requestUri, CancellationToken cancelToken = default) {
         if (Fail(await client.Get(requestUri, cancelToken), out var e, out var response)) return e.Trace();
         using (response)
@@ -20,24 +15,6 @@ static class HttpResponseMessageExtensions
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ValueTask<Outcome<T>> GetLineJsonAsync<T>(this ValueTask<Outcome<HttpResponseMessage>> task)
         => task.DeserializedJson<T>(LineJson.Options);
-
-    /// <summary>
-    /// Validate the response status.
-    /// </summary>
-    /// <param name="response">HttpResponseMessage</param>
-    /// <returns>HttpResponseMessage</returns>
-    internal static async ValueTask<HttpResponseMessage> EnsureSuccessStatusCodeAsync(this HttpResponseMessage response) {
-        if (response.IsSuccessStatusCode)
-            return response;
-        else{
-            var content = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var (error, errorMessage) = Try(() => JsonSerializer.Deserialize<ErrorResponseMessage>(content, LineJson.Options)!);
-            if (error is not null)
-                errorMessage = new ErrorResponseMessage { Message = content, Details = [] };
-
-            throw new LineResponseException(errorMessage.Message) { StatusCode = response.StatusCode, ResponseMessage = errorMessage };
-        }
-    }
 
     internal static async ValueTask<Outcome<LanguageExt.Unit>> CheckSucceed(this HttpResponseMessage r, JsonSerializerOptions? options = null) {
         using (r)

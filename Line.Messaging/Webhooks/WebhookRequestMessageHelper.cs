@@ -13,9 +13,9 @@ public static class WebhookRequestMessageHelper
     /// <param name="channelSecret">ChannelSecret</param>
     /// <param name="botUserId">BotUserId</param>
     /// <returns>List of WebhookEvent</returns>
-    public static async Task<Outcome<WebhookMessage>> GetWebhookMessage(this HttpRequestMessage request, string channelSecret, string? botUserId = null)
+    public static async ValueTask<Outcome<WebhookMessage>> GetWebhookMessage(this HttpRequestMessage request, string channelSecret, string? botUserId = null)
     {
-        var content = await request.Content!.ReadAsStringAsync();
+        if (Fail(await request.Content!.ReadAsString(), out var e, out var content)) return e.Trace();
 
         var xLineSignature = request.Headers.GetValues("X-Line-Signature").FirstOrDefault();
 
@@ -23,20 +23,16 @@ public static class WebhookRequestMessageHelper
     }
 
     public static Outcome<WebhookMessage> GetWebhookMessage(string channelSecret, string? signature, string? content, string? botUserId) {
-        if (string.IsNullOrEmpty(content))
-            throw new ArgumentNullException(nameof(content));
+        if (string.IsNullOrEmpty(content)) return new ErrorInfo(InvalidRequest, nameof(content));
 
-        if (string.IsNullOrEmpty(signature) || !VerifySignature(channelSecret, signature, content))
-            throw new InvalidSignatureException("Signature validation failed");
+        if (string.IsNullOrEmpty(signature) || !VerifySignature(channelSecret, signature, content)) return new ErrorInfo(InvalidRequest, "Signature validation failed");
 
-        var result = WebhookMessage.TryParse(content);
+        if (Fail(WebhookMessage.TryParse(content), out var e, out var @event)) return e.Trace();
 
-        if (result.IfSuccess(out var @event, out _) && !string.IsNullOrEmpty(botUserId) && botUserId != @event.Destination)
-            throw new UserIdMismatchException("Bot user ID does not match.") {
-                Data = { { "destination", @event.Destination } }
-            };
+        if (!string.IsNullOrEmpty(botUserId) && botUserId != @event.Destination)
+            return new ErrorInfo(ValidationFailed, "Bot user ID does not match.", data: ToJson(("destination", @event.Destination)));
 
-        return result;
+        return @event;
     }
 
     /// <summary>

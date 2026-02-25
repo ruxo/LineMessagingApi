@@ -40,16 +40,15 @@ public class LiffClient(HttpClient client)
     /// <param name="url">
     /// URL of the LIFF app. Must start with HTTPS.
     /// </param>
-    public Task UpdateLiffAppAsync(string liffId, ViewType viewType, string url)
-        => client.PutAsJsonAsync($"/apps/{liffId}/view", new { type = viewType, url }, LineJson.Options)
-                 .EnsureSuccessStatusCodeAsync();
+    public ValueTask<Outcome<Unit>> UpdateLiffAppAsync(string liffId, ViewType viewType, string url)
+        => client.PutJson($"/apps/{liffId}/view", new { type = viewType, url }, LineJson.Options).CheckSucceed();
 
     /// <summary>
     /// Gets information on all the LIFF apps registered in the channel.
     /// </summary>
     /// <returns>A JSON object with the following properties.</returns>
-    public Task<LiffApp[]> GetAllLiffAppAsync()
-        => client.GetFromJsonAsync<LiffAppInfo>("/apps", LineJson.Options).Select(x => x.Apps);
+    public ValueTask<Outcome<LiffApp[]>> GetAllLiffAppAsync()
+        => client.Get("/apps").DeserializedJson<LiffAppInfo>(LineJson.Options).Select(x => x.Apps);
 
     readonly record struct LiffAppInfo(LiffApp[] Apps);
 
@@ -57,6 +56,6 @@ public class LiffClient(HttpClient client)
     /// Deletes a LIFF app.
     /// </summary>
     /// <param name="liffId">ID of the LIFF app to be deleted</param>
-    public Task DeleteLiffAppAsync(string liffId)
-        => client.DeleteAsync($"/apps/{liffId}").EnsureSuccessStatusCodeAsync();
+    public ValueTask<Outcome<Unit>> DeleteLiffAppAsync(string liffId)
+        => client.Delete($"/apps/{liffId}").CheckSucceed();
 }

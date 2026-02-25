@@ -1,14 +1,7 @@
-﻿namespace Line.Messaging.Liff
-{
-    public class LiffApp
-    {
-        public string LiffId { get; }
-        public View View { get; }
+﻿namespace Line.Messaging.Liff;
 
-        public LiffApp(string liffId, View view)
-        {
-            LiffId = liffId;
-            View = view;
-        }
-    }
+public class LiffApp(string liffId, View view)
+{
+    public string LiffId { get; } = liffId;
+    public View View { get; } = view;
 }

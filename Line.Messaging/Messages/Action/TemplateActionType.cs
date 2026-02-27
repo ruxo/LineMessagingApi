@@ -1,13 +1,12 @@
-﻿namespace Line.Messaging
+﻿namespace Line.Messaging;
+
+public static class TemplateActionType
 {
-    public enum TemplateActionType
-    {
-        Postback,
-        Message,
-        Uri,
-        Datetimepicker,
-        Camera,
-        CameraRoll,
-        Location
-    }
+    public const string Postback = "postback";
+    public const string Message = "message";
+    public const string Uri = "uri";
+    public const string DatetimePicker = "datetimepicker";
+    public const string Camera = "camera";
+    public const string CameraRoll = "cameraRoll";
+    public const string Location = "location";
 }

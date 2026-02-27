@@ -1,27 +1,24 @@
-﻿namespace Line.Messaging
+﻿namespace Line.Messaging;
+
+/// <summary>
+/// This action can be configured only with quick reply buttons. When a button associated with this action is tapped, the location screen in the LINE app is opened.
+/// https://developers.line.me/en/reference/messaging-api/#location-action
+/// </summary>
+public class LocationTemplateAction : ITemplateAction
 {
     /// <summary>
-    /// This action can be configured only with quick reply buttons. When a button associated with this action is tapped, the location screen in the LINE app is opened.
-    /// https://developers.line.me/en/reference/messaging-api/#location-action
+    /// Label for the action
+    /// Max: 20 characters
     /// </summary>
-    public class LocationTemplateAction : ITemplateAction
+    public string Label { get; }
+
+    public LocationTemplateAction(string label) : base(TemplateActionType.Location)
     {
-        public TemplateActionType Type { get; } = TemplateActionType.Location;
+        Label = label.Substring(0, Math.Min(label.Length, 20));
+    }
 
-        /// <summary>
-        /// Label for the action
-        /// Max: 20 characters
-        /// </summary>
-        public string Label { get; }
-        
-        public LocationTemplateAction(string label)
-        {
-            Label = label.Substring(0, Math.Min(label.Length, 20));
-        }
-
-        internal static LocationTemplateAction CreateFrom(dynamic dynamicObject)
-        {
-            return new LocationTemplateAction((string)dynamicObject?.label);
-        }
+    internal static LocationTemplateAction CreateFrom(dynamic dynamicObject)
+    {
+        return new LocationTemplateAction((string)dynamicObject?.label);
     }
 }

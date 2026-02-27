@@ -1,10 +1,9 @@
-﻿namespace Line.Messaging
+﻿namespace Line.Messaging;
+
+public static class TemplateType
 {
-    public enum TemplateType
-    {
-        Buttons,
-        Confirm,
-        Carousel,
-        Image_carousel
-    }
+    public const string Buttons = "buttons";
+    public const string Confirm = "confirm";
+    public const string Carousel = "carousel";
+    public const string ImageCarousel = "image_carousel";
 }

@@ -13,10 +13,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 dotnet build
 dotnet build -c Release
 
-# Test (xUnit)
-dotnet test
-dotnet test --filter "ClassName=ModelSerializationTests"
-dotnet test --filter "Name=DeserializingFollowEvent"
+# Test (TUnit)
+dotnet run --project test/TUnitTests
+dotnet run --project test/TUnitTests -- --filter "ClassName=ModelSerializationTests"
+dotnet run --project test/TUnitTests -- --filter "Name=DeserializingFollowEvent"
 
 # Pack NuGet packages
 dotnet pack -c Release Line.Messaging/Line.Messaging.csproj
@@ -35,7 +35,7 @@ dotnet restore
 
 - **`Line.Messaging/`** — Core SDK. Handles message sending, webhook parsing, signature validation.
 - **`Line.Messaging.AspNet/`** — ASP.NET Core integration. Adds DI setup and request extension methods.
-- **`UnitTests/`** — xUnit tests with FluentAssertions.
+- **`test/TUnitTests/`** — TUnit tests.
 
 ### Key Types
 
@@ -107,3 +107,4 @@ if (!reply.IfSuccess(out _, out var error))
 - **Centralized package versions** in `Directory.Packages.props` — add versions there, not in individual `.csproj` files.
 - **MinVer** drives NuGet versioning from git tags automatically.
 - Tests use triple-quoted JSON string literals (`"""`) to mirror real LINE API payloads.
+- Tests use **TUnit** assertions (`await Assert.That(...).IsTrue()`, `.IsEquivalentTo()`, etc.).

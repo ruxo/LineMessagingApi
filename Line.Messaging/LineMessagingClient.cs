@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Logging;
 
 namespace Line.Messaging;
 
@@ -7,7 +8,7 @@ namespace Line.Messaging;
 /// LINE Messaging API client, which handles request/response to LINE server.
 /// </summary>
 [PublicAPI]
-public class LineMessagingClient(HttpClient http) : ILineMessagingClient
+public class LineMessagingClient(HttpClient http, ILogger? logger = null) : ILineMessagingClient
 {
     public const string OfficialUri = "https://api.line.me/v2/";
 
@@ -30,9 +31,16 @@ public class LineMessagingClient(HttpClient http) : ILineMessagingClient
         => http.PostJson("bot/message/reply", new { replyToken, messages = messages.Join(", ") }, LineJson.Options).CheckSucceed();
 
     public async ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages, CancellationToken cancel = default) {
-        foreach(var messageBlocks in messages.Batch(MaxMessageBatchSize))
-            if (Fail(await http.PostJson("bot/message/push", new { to, messages = messageBlocks.AsArray() }, LineJson.Options, cancel).CheckSucceed(), out var e))
+        foreach(var messageBlocks in messages.Batch(MaxMessageBatchSize)){
+            var botMessage = new { to, messages = messageBlocks.AsArray() };
+            if (Fail(await http.PostJson("bot/message/push", botMessage, LineJson.Options, cancel).CheckSucceed(), out var e)){
+                if (logger?.IsEnabled(LogLevel.Debug) == true){
+                    var unwrap = JsonSerialize(botMessage, LineJson.Options).Unwrap();
+                    logger.LogDebug("Push message failed: {Message} ==> {@Error}", unwrap, e);
+                }
                 return e.Trace("Push message failed");
+            }
+        }
         return unit;
     }
 

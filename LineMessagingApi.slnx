@@ -7,10 +7,10 @@
     <File Path="build.ps1" />
   </Folder>
   <Folder Name="/src/">
-    <Project Path="Line.Messaging.AspNet\Line.Messaging.AspNet.csproj" Type="Classic C#" />
+    <Project Path="Line.Messaging.AspNet\Line.Messaging.AspNet.csproj" Type="C#" />
     <Project Path="Line.Messaging\Line.Messaging.csproj" />
   </Folder>
   <Folder Name="/test/">
-    <Project Path="UnitTests\UnitTests.csproj" Type="Classic C#" />
+    <Project Path="test/TUnitTests/TUnitTests.csproj" />
   </Folder>
 </Solution>

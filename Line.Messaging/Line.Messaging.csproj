@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>pierre3, kenamanu, Ruxo Zheng</Authors>
-      <AssemblyVersion>1.0.0.0</AssemblyVersion>
+      <AssemblyVersion>1.0.7.0</AssemblyVersion>
     <Product>Line Messaging API</Product>
     <Description>SDK for the LINE Messaging API for C#</Description>
     <Copyright>© 2018 pierre3</Copyright>

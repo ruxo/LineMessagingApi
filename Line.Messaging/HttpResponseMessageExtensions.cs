@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Net;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace Line.Messaging;
@@ -17,10 +18,15 @@ static class HttpResponseMessageExtensions
         => task.DeserializedJson<T>(LineJson.Options);
 
     internal static async ValueTask<Outcome<LanguageExt.Unit>> CheckSucceed(this HttpResponseMessage r, JsonSerializerOptions? options = null) {
-        using (r)
-            return r.IsSuccessStatusCode
-                       ? unit
-                       : ExtractError<LanguageExt.Unit>(Success(await r.Content.ReadAsString().ConfigureAwait(false), out var body) ? body : string.Empty, options);
+        using (r){
+            if (r.IsSuccessStatusCode) return unit;
+
+            var body = Success(await r.Content.ReadAsString().ConfigureAwait(false), out var b) ? b : string.Empty;
+            // An earlier attempt with the same retry key already delivered this request.
+            if (LineApiErrors.IsRetryKeyAccepted(r.StatusCode, body)) return unit;
+
+            return ExtractError<LanguageExt.Unit>(r.StatusCode, r.ReasonPhrase, body, options);
+        }
     }
 
     internal static ValueTask<Outcome<LanguageExt.Unit>> CheckSucceed(this ValueTask<Outcome<HttpResponseMessage>> r, JsonSerializerOptions? options = null)
@@ -28,10 +34,10 @@ static class HttpResponseMessageExtensions
            from _ in response.CheckSucceed(options)
            select unit;
 
-    static Outcome<T> ExtractError<T>(string body, JsonSerializerOptions? options) {
+    static Outcome<T> ExtractError<T>(HttpStatusCode status, string? reasonPhrase, string body, JsonSerializerOptions? options) {
         if (Success(JsonDeserialize<ErrorInfo>(body, options), out var errorInfo))
             if (!string.IsNullOrEmpty(errorInfo.Code))
                 return errorInfo.Trace("From HTTP response");
-        return new ErrorInfo(HttpError, data: body);
+        return LineApiErrors.ToError(status, reasonPhrase, body);
     }
 }

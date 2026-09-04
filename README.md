@@ -26,6 +26,8 @@ ValueTask<Outcome<Unit>> ReplyMessageAsync(string replyToken, params string[] me
 ValueTask<Outcome<Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
 ValueTask<Outcome<Unit>> PushMessageAsync(string to, IEnumerable<Message> messages)
 ValueTask<Outcome<Unit>> PushMessageAsync(string to, params string[] messages)
+//   push batches by five; each batch carries its own X-Line-Retry-Key, so a re-sent request executes once.
+//   A 429 fails with LineApiErrors.QUOTA_EXCEEDED (monthly quota) or RATE_LIMITED; see LineApiErrors.
 ValueTask<Outcome<Unit>> MultiCastMessageAsync(IEnumerable<string> to, IEnumerable<Message> messages)
 ValueTask<Outcome<(string MimeType, byte[] Data)>> GetContentBytesAsync(string messageId)
 

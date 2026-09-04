@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Logging;
 
@@ -30,10 +31,18 @@ public class LineMessagingClient(HttpClient http, ILogger? logger = null) : ILin
     public ValueTask<Outcome<LanguageExt.Unit>> ReplyMessageWithJsonAsync(string replyToken, params string[] messages)
         => http.PostJson("bot/message/reply", new { replyToken, messages = messages.Join(", ") }, LineJson.Options).CheckSucceed();
 
+    /// <summary>
+    /// Sends in batches of five, LINE's cap per call. Each batch carries its own <see cref="LineApiErrors.RETRY_KEY_HEADER"/>,
+    /// set once on the request so any retry of that request by the HTTP pipeline re-sends the same key and LINE
+    /// executes the push only once.
+    /// </summary>
     public async ValueTask<Outcome<LanguageExt.Unit>> PushMessageAsync(string to, IEnumerable<Message> messages, CancellationToken cancel = default) {
         foreach(var messageBlocks in messages.Batch(MaxMessageBatchSize)){
             var botMessage = new { to, messages = messageBlocks.AsArray() };
-            if (Fail(await http.PostJson("bot/message/push", botMessage, LineJson.Options, cancel).CheckSucceed(), out var e)){
+            using var request = new HttpRequestMessage(HttpMethod.Post, "bot/message/push");
+            request.Headers.Add(LineApiErrors.RETRY_KEY_HEADER, Guid.NewGuid().ToString());
+            request.Content = JsonContent.Create(botMessage, options: LineJson.Options);
+            if (Fail(await http.TrySend(request, cancel).CheckSucceed(), out var e)){
                 if (logger?.IsEnabled(LogLevel.Debug) == true){
                     var unwrap = JsonSerialize(botMessage, LineJson.Options).Unwrap();
                     logger.LogDebug("Push message failed: {Message} ==> {@Error}", unwrap, e);

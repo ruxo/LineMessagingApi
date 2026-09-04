@@ -19,6 +19,6 @@ public class CameraTemplateAction : ITemplateAction
 
     internal static CameraTemplateAction CreateFrom(dynamic dynamicObject)
     {
-        return new CameraTemplateAction((string)dynamicObject?.label);
+        return new CameraTemplateAction(((string?)dynamicObject?.label)!);
     }
 }

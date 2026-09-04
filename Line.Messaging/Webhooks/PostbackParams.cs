@@ -10,19 +10,19 @@ namespace Line.Messaging.Webhooks
         /// <summary>
         /// Date selected by user. Only included in the date mode. Format: full-date
         /// </summary>
-        public string Date { get; }
+        public string? Date { get; }
 
         /// <summary>
         /// Time selected by the user. Only included in the time mode. Format: time-hour ":" time-minute
         /// </summary>
-        public string Time { get; }
+        public string? Time { get; }
 
         /// <summary>
         /// Date and time selected by the user. Only included in the datetime mode. Format: full-date "T" time-hour ":" time-minute
         /// </summary>
-        public string DateTime { get; }
+        public string? DateTime { get; }
 
-        public PostbackParams(string date, string time, string datetime)
+        public PostbackParams(string? date, string? time, string? datetime)
         {
             if (date != null && !Regex.Match(date, @"^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$").Success)
             {

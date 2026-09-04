@@ -10,7 +10,7 @@
         /// Short-lived channel access token. Valid for 30 days.
         /// Note: Channel access tokens cannot be refreshed
         /// </summary>
-        public string AccessToken { get; set; }
+        public string AccessToken { get; set; } = null!;
 
         /// <summary>
         /// Time until channel access token expires in seconds from time the token is issued

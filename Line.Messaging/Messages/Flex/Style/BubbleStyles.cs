@@ -9,24 +9,24 @@
         /// Style of the header block
         /// <para>(Optional)</para>
         /// </summary>
-        public BlockStyle Header { get; set; }
+        public BlockStyle? Header { get; set; }
 
         /// <summary>
         /// Style of the hero block
         /// <para>(Optional)</para>
         /// </summary>
-        public BlockStyle Hero { get; set; }
+        public BlockStyle? Hero { get; set; }
 
         /// <summary>
         /// Style of the body block
         /// <para>(Optional)</para>
         /// </summary>
-        public BlockStyle Body { get; set; }
+        public BlockStyle? Body { get; set; }
 
         /// <summary>
         /// Style of the footer block
         /// <para>(Optional)</para>
         /// </summary>
-        public BlockStyle Footer { get; set; }
+        public BlockStyle? Footer { get; set; }
     }
 }

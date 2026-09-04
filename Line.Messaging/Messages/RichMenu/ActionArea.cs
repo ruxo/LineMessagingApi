@@ -9,12 +9,12 @@ public class ActionArea
     /// <summary>
     /// Object describing the boundaries of the area in pixels. See bounds object.
     /// </summary>
-    public ImagemapArea Bounds { get; set; }
+    public ImagemapArea Bounds { get; set; } = null!;
 
     /// <summary>
     /// Action performed when the area is tapped. See action objects. Note: The label field is not supported for actions in rich menus.
     /// </summary>
-    public ITemplateAction Action { get; set; }
+    public ITemplateAction? Action { get; set; }
 
     internal static ActionArea CreateFrom(dynamic dynamicObject)
     {

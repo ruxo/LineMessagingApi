@@ -26,14 +26,14 @@ public class PostbackTemplateAction : ITemplateAction
     /// Max: 300 characters
     /// The displayText and text fields cannot both be used at the same time.
     /// </summary>
-    public string Text { get; }
+    public string? Text { get; }
 
     /// <summary>
     /// Text displayed in the chat as a message sent by the user when the action is performed.
     /// Max: 300 characters
     /// The displayText and text fields cannot both be used at the same time.
     /// </summary>
-    public string DisplayText { get; }
+    public string? DisplayText { get; }
 
     /// <summary>
     /// Constructor
@@ -57,7 +57,7 @@ public class PostbackTemplateAction : ITemplateAction
     /// If set to true, <paramref name="text"/> parameter is set to DisplayText property.
     /// (Deprecated) If set to false, <paramref name="text"/> parameter is set to Text property. However text property is deprecated.
     /// </param>
-    public PostbackTemplateAction(string label, string data, string text = null, bool useDisplayText = true) : base(TemplateActionType.Postback)
+    public PostbackTemplateAction(string label, string data, string? text = null, bool useDisplayText = true) : base(TemplateActionType.Postback)
     {
         Data = data.Substring(0, Math.Min(data.Length, 300));
         Label = label.Substring(0, Math.Min(label.Length, 20));
@@ -76,12 +76,12 @@ public class PostbackTemplateAction : ITemplateAction
     internal static PostbackTemplateAction CreateFrom(dynamic dynamicObject)
     {
         bool useDisplayText = true;
-        string text = dynamicObject?.displayText;
+        string? text = (string?)dynamicObject?.displayText;
         if (text == null)
         {
-            text = dynamicObject?.text;
+            text = (string?)dynamicObject?.text;
             useDisplayText = false;
         }
-        return new PostbackTemplateAction((string)dynamicObject?.label, (string)dynamicObject?.data, text, useDisplayText);
+        return new PostbackTemplateAction(((string?)dynamicObject?.label)!, ((string?)dynamicObject?.data)!, text, useDisplayText);
     }
 }

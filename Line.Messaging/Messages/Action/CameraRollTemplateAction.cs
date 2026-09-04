@@ -19,6 +19,6 @@ public class CameraRollTemplateAction : ITemplateAction
 
     internal static CameraRollTemplateAction CreateFrom(dynamic dynamicObject)
     {
-        return new CameraRollTemplateAction((string)dynamicObject?.label);
+        return new CameraRollTemplateAction(((string?)dynamicObject?.label)!);
     }
 }

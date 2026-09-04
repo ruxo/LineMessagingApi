@@ -74,6 +74,6 @@
         /// / LINE for Windows and macOS: 5.9.0 and later
         /// </para>
         /// </summary>
-        public ITemplateAction Action { get; set; }
+        public ITemplateAction? Action { get; set; }
     }
 }

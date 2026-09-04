@@ -41,12 +41,12 @@ public class ResponseRichMenu : RichMenu
 
         var menu = new RichMenu()
         {
-            Name = (string)dynamicObject?.name,
+            Name = (string?)dynamicObject?.name,
             Size = new ImagemapSize((int)(dynamicObject?.size?.width ?? 0), (int)(dynamicObject?.size?.height ?? 0)),
             Selected = (bool)(dynamicObject?.selected ?? false),
-            ChatBarText = (string)dynamicObject?.chatBarText,
+            ChatBarText = (string?)dynamicObject?.chatBarText,
             Areas = areas
         };
-        return new ResponseRichMenu((string)dynamicObject?.richMenuId, menu);
+        return new ResponseRichMenu(((string?)dynamicObject?.richMenuId)!, menu);
     }
 }

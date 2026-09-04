@@ -47,7 +47,7 @@ public class CarouselTemplate : ITemplate
     /// contain: The entire image is displayed in the image area.A background is displayed in the unused areas to the left and right of vertical images and in the areas above and below horizontal images.
     /// The default value is cover.
     /// </param>
-    public CarouselTemplate(IList<CarouselColumn> columns = null,
+    public CarouselTemplate(IList<CarouselColumn>? columns = null,
                             ImageAspectRatioType imageAspectRatio = ImageAspectRatioType.Rectangle, ImageSizeType imageSize = ImageSizeType.Cover) : base(TemplateType.Carousel)
     {
         Columns = columns ?? new List<CarouselColumn>();

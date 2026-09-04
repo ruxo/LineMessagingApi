@@ -13,7 +13,7 @@
         /// </para>
         /// <para>(Required)</para>
         /// </summary>
-        public string Url { get; set; }
+        public string Url { get; set; } = null!;
 
         /// <summary>
         /// Minimum space between this component and the previous component in the parent box.<para> 
@@ -41,7 +41,7 @@
         /// The default value is 1:1.
         /// <para>(Optional)</para>
         /// </summary>
-        public AspectRatio AspectRatio { get; set; }
+        public AspectRatio? AspectRatio { get; set; }
 
         /// <summary>
         /// Constructor

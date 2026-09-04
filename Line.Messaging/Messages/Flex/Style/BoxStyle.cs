@@ -9,7 +9,7 @@
         /// Background color of the block. Use a hexadecimal color code.
         /// <para>(Optional)</para>
         /// </summary>
-        public string BackgroundColor { get; set; }
+        public string? BackgroundColor { get; set; }
 
         /// <summary>
         /// true to place a separator above the block.<para> 
@@ -24,6 +24,6 @@
         /// Color of the separator. Use a hexadecimal color code.
         /// <para>(Optional)</para>
         /// </summary>
-        public string SeparatorColor { get; set; }
+        public string? SeparatorColor { get; set; }
     }
 }

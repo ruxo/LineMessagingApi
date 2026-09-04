@@ -19,6 +19,6 @@ public class LocationTemplateAction : ITemplateAction
 
     internal static LocationTemplateAction CreateFrom(dynamic dynamicObject)
     {
-        return new LocationTemplateAction((string)dynamicObject?.label);
+        return new LocationTemplateAction(((string?)dynamicObject?.label)!);
     }
 }

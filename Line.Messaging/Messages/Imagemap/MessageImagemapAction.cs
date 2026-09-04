@@ -25,7 +25,7 @@
         /// Max: 50 characters
         /// Supported on LINE iOS version 8.2.0 and later.
         /// </summary>
-        public string Label { get; }
+        public string? Label { get; }
 
         /// <summary>
         /// Constructor
@@ -42,7 +42,7 @@
         /// Max: 50 characters
         /// Supported on LINE iOS version 8.2.0 and later.
         /// </param>
-        public MessageImagemapAction(ImagemapArea area, string text, string label = null)
+        public MessageImagemapAction(ImagemapArea area, string text, string? label = null)
         {
             Area = area;
             Text = text.Substring(0, Math.Min(text.Length, 400));

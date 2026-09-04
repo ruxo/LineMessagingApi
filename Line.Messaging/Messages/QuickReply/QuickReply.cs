@@ -11,7 +11,7 @@ public class QuickReply
     /// </summary>
     public IList<QuickReplyButtonObject> Items { get; set; }
 
-    public QuickReply(IList<QuickReplyButtonObject> items = null)
+    public QuickReply(IList<QuickReplyButtonObject>? items = null)
     {
         Items = items ?? new List<QuickReplyButtonObject>();
     }

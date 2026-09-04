@@ -8,7 +8,7 @@
         /// Text
         /// <para>(Required)</para>
         /// </summary>
-        public string Text { get; set; }
+        public string Text { get; set; } = null!;
 
         /// <summary>
         /// The ratio of the width or height of this component within the parent box.<para>
@@ -88,13 +88,13 @@
         /// Font weight. You can specify one of the following values: regular, or bold. Specifying bold makes the font bold. The default value is regular.
         /// <para>(Optional)</para>
         /// </summary>
-        public string Color { get; set; }
+        public string? Color { get; set; }
 
         /// <summary>
         /// Action performed when this text is tapped. Specify an action object.
         /// <para>(Optional)</para>
         /// </summary>
-        public ITemplateAction Action { get; set; }
+        public ITemplateAction? Action { get; set; }
 
         /// <summary>
         /// Constructor

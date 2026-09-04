@@ -14,7 +14,7 @@ public class ButtonsTemplate : ITemplate
     /// Max width: 1024px
     /// Max: 1 MB
     /// </summary>
-    public string ThumbnailImageUrl { get; }
+    public string? ThumbnailImageUrl { get; }
 
     /// <summary>
     /// Aspect ratio of the image. Specify one of the following values:
@@ -35,13 +35,13 @@ public class ButtonsTemplate : ITemplate
     /// <summary>
     /// Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
     /// </summary>
-    public string ImageBackgroundColor { get; }
+    public string? ImageBackgroundColor { get; }
 
     /// <summary>
     /// Title
     /// Max: 40 characters
     /// </summary>
-    public string Title { get; }
+    public string? Title { get; }
 
     /// <summary>
     /// Message text
@@ -59,7 +59,7 @@ public class ButtonsTemplate : ITemplate
     /// <summary>
     /// Action when image is tapped; set for the entire image, title, and text area
     /// </summary>
-    public ITemplateAction DefaultAction { get; }
+    public ITemplateAction? DefaultAction { get; }
 
     /// <summary>
     /// Constructor
@@ -103,9 +103,9 @@ public class ButtonsTemplate : ITemplate
     /// <param name="defaultAction">
     /// Action when image is tapped; set for the entire image, title, and text area
     /// </param>
-    public ButtonsTemplate(string text, string thumbnailImageUrl = null, string title = null, IList<ITemplateAction> actions = null,
-                           ImageAspectRatioType imageAspectRatio = ImageAspectRatioType.Rectangle, ImageSizeType imageSize = ImageSizeType.Cover, string imageBackgroundColor = "#FFFFFF",
-                           ITemplateAction defaultAction = null) : base(TemplateType.Buttons)
+    public ButtonsTemplate(string text, string? thumbnailImageUrl = null, string? title = null, IList<ITemplateAction>? actions = null,
+                           ImageAspectRatioType imageAspectRatio = ImageAspectRatioType.Rectangle, ImageSizeType imageSize = ImageSizeType.Cover, string? imageBackgroundColor = "#FFFFFF",
+                           ITemplateAction? defaultAction = null) : base(TemplateType.Buttons)
     {
         ThumbnailImageUrl = thumbnailImageUrl;
         Title = title?.Substring(0, Math.Min(title.Length, 40));

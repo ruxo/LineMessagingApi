@@ -6,13 +6,13 @@
 /// </summary>
 public class RichMenu
 {
-    string _name;
-    string _chatBarText;
+    string? _name;
+    string? _chatBarText;
 
     /// <summary>
     /// size object which contains the width and height of the rich menu displayed in the chat. Rich menu images must be one of the following sizes: 2500x1686, 2500x843.
     /// </summary>
-    public ImagemapSize Size { get; set; }
+    public ImagemapSize Size { get; set; } = null!;
 
     /// <summary>
     /// true to display the rich menu by default. Otherwise, false.
@@ -22,7 +22,7 @@ public class RichMenu
     /// <summary>
     /// Name of the rich menu. This value can be used to help manage your rich menus and is not displayed to users. Maximum of 300 characters.
     /// </summary>
-    public string Name
+    public string? Name
     {
         get => _name;
         set
@@ -34,7 +34,7 @@ public class RichMenu
     /// <summary>
     /// Text displayed in the chat bar. Maximum of 14 characters.
     /// </summary>
-    public string ChatBarText
+    public string? ChatBarText
     {
         get => _chatBarText;
         set
@@ -46,7 +46,7 @@ public class RichMenu
     /// <summary>
     /// Array of area objects which define the coordinates and size of tappable areas. Maximum of 20 area objects.
     /// </summary>
-    public IList<ActionArea> Areas { set; get; }
+    public IList<ActionArea> Areas { set; get; } = null!;
 
     /// <summary>
     /// Converts from RichMenu to ResponseRichMenu

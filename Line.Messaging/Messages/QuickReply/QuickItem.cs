@@ -18,11 +18,11 @@
         /// There is no limit on the image size.
         /// If the action property has a camera action, camera roll action, or location action, and the imageUrl property is not set, the default icon is displayed.
         /// </summary>
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         public ITemplateAction Action { get; set; }
 
-        public QuickReplyButtonObject(ITemplateAction action, string imageUrl = null)
+        public QuickReplyButtonObject(ITemplateAction action, string? imageUrl = null)
         {
             Action = action;
             ImageUrl = imageUrl;

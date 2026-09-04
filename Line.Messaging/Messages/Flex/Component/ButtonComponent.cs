@@ -11,7 +11,7 @@
         /// Action performed when this button is tapped. Specify an action object.
         /// <para>(Required)</para>
         /// </summary>
-        public ITemplateAction Action { get; set; }
+        public ITemplateAction Action { get; set; } = null!;
 
         /// <summary>
         /// The ratio of the width or height of this component within the parent box. 
@@ -52,7 +52,7 @@
         /// Background color when the style property is primary or secondary. Use a hexadecimal color code.
         /// <para>(Optional)</para>
         /// </summary>
-        public string Color { get; set; }
+        public string? Color { get; set; }
 
         /// <summary>
         /// Vertical alignment style.<para> 

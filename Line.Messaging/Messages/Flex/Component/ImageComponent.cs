@@ -15,7 +15,7 @@
         /// / Maximum data size: 1 MB</para>
         /// <para>(Required)</para>
         /// </summary>
-        public string Url { get; set; }
+        public string Url { get; set; } = null!;
 
         /// <summary>
         /// The ratio of the width or height of this component within the parent box. <para>
@@ -75,7 +75,7 @@
         /// The default value is 1:1.
         /// <para>(Optional)</para>
         /// </summary>
-        public AspectRatio AspectRatio { get; set; }
+        public AspectRatio? AspectRatio { get; set; }
 
         /// <summary>
         /// Style of the image.<para> 
@@ -91,13 +91,13 @@
         /// Background color of the image. Use a hexadecimal color code.
         /// <para>(Optional)</para>
         /// </summary>
-        public string BackgroundColor { get; set; }
+        public string? BackgroundColor { get; set; }
 
         /// <summary>
         /// Action performed when this image is tapped. Specify an action object.
         /// <para>(Optional)</para>
         /// </summary>
-        public ITemplateAction Action { get; set; }
+        public ITemplateAction? Action { get; set; }
 
 
         /// <summary>

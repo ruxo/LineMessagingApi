@@ -29,7 +29,7 @@ public class ConfirmTemplate : ITemplate
     /// Action when tapped
     /// Set 2 actions for the 2 buttons
     /// </param>
-    public ConfirmTemplate(string text, IList<ITemplateAction> actions = null) : base(TemplateType.Confirm)
+    public ConfirmTemplate(string text, IList<ITemplateAction>? actions = null) : base(TemplateType.Confirm)
     {
         Text = text.Substring(0, Math.Min(text.Length, 240));
         Actions = actions ?? new List<ITemplateAction>();

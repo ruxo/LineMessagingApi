@@ -12,7 +12,7 @@ public class UriTemplateAction : ITemplateAction
     /// Optional for image carousel templates.Max: 12 characters.
     /// Optional for rich menus. Spoken when the accessibility feature is enabled on the client device. Max: 20 characters. Supported on LINE iOS version 8.2.0 and later.
     /// </summary>
-    public string Label { get; }
+    public string? Label { get; }
 
     /// <summary>
     /// URI opened when the action is performed (Max: 1000 characters)
@@ -28,7 +28,7 @@ public class UriTemplateAction : ITemplateAction
     /// LINE 5.12.0 or later for macOS and Windows</para>
     /// Note: The altUri.desktop property is supported only when you set URI actions in Flex Messages.
     /// </summary>
-    public AltUri AltUri { get; }
+    public AltUri? AltUri { get; }
 
     /// <summary>
     /// Constructor
@@ -51,7 +51,7 @@ public class UriTemplateAction : ITemplateAction
     /// LINE 5.12.0 or later for macOS and Windows</para>
     /// Note: The altUri.desktop property is supported only when you set URI actions in Flex Messages.
     /// </param>
-    public UriTemplateAction(string label, string uri, AltUri altUri = null) : base(TemplateActionType.Uri)
+    public UriTemplateAction(string? label, string uri, AltUri? altUri = null) : base(TemplateActionType.Uri)
     {
         Label = label?.Substring(0, Math.Min(label.Length, 20));
         Uri = uri;
@@ -60,8 +60,8 @@ public class UriTemplateAction : ITemplateAction
 
     internal static UriTemplateAction CreateFrom(dynamic dynamicObject)
     {
-        var desktopUri = (string)dynamicObject?.altUri?.desktop;
+        var desktopUri = (string?)dynamicObject?.altUri?.desktop;
         var altUri = (desktopUri == null) ? null : new AltUri(desktopUri);
-        return new UriTemplateAction((string)dynamicObject?.label, (string)dynamicObject?.uri, altUri);
+        return new UriTemplateAction((string?)dynamicObject?.label, ((string?)dynamicObject?.uri)!, altUri);
     }
 }

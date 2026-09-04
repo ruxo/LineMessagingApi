@@ -18,7 +18,7 @@ public class CarouselContainerFlexMessage : FlexMessage
     public CarouselContainerFlexMessage AddBubbleContainer(BubbleContainer bubbleContainer)
     {
         if (bubbleContainer == null) { throw new ArgumentNullException(nameof(bubbleContainer)); }
-        var contents = (Contents as CarouselContainer).Contents;
+        var contents = ((CarouselContainer)Contents!).Contents;
         contents.Add(bubbleContainer);
         return this;
     }

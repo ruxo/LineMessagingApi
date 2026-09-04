@@ -1,4 +1,6 @@
-﻿namespace Line.Messaging;
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Line.Messaging;
 
 /// <summary>
 /// When a control associated with this action is tapped, a postback event is returned via webhook with the date and time selected by the user from the date and time selection dialog.
@@ -12,7 +14,7 @@ public class DateTimePickerTemplateAction : ITemplateAction
     /// Optional for image carousel templates.Max: 12 characters.
     /// Optional for rich menus.Spoken when the accessibility feature is enabled on the client device.Max: 20 characters.Supported on LINE iOS version 8.2.0 and later.
     /// </summary>
-    public string Label { get; protected set; }
+    public string? Label { get; protected set; }
 
     /// <summary>
     /// String returned via webhook in the postback.data property of the postback event
@@ -31,19 +33,19 @@ public class DateTimePickerTemplateAction : ITemplateAction
     /// <summary>
     /// Initial value of date or time
     /// </summary>
-    public string Initial { get; protected set; }
+    public string? Initial { get; protected set; }
 
     /// <summary>
     /// Largest date or time value that can be selected.
     /// Must be greater than the min value.
     /// </summary>
-    public string Max { get; protected set; }
+    public string? Max { get; protected set; }
 
     /// <summary>
     /// Smallest date or time value that can be selected.
     /// Must be less than the max value.
     /// </summary>
-    public string Min { get; protected set; }
+    public string? Min { get; protected set; }
 
     /// <summary>
     /// Constructor
@@ -75,7 +77,7 @@ public class DateTimePickerTemplateAction : ITemplateAction
     /// Largest date or time value that can be selected.
     /// Must be greater than the min value.
     /// </param>
-    public DateTimePickerTemplateAction(string label, string data, DateTimePickerMode mode, string initial = null, string min = null, string max = null) : base(TemplateActionType.DatetimePicker)
+    public DateTimePickerTemplateAction(string? label, string data, DateTimePickerMode mode, string? initial = null, string? min = null, string? max = null) : base(TemplateActionType.DatetimePicker)
     {
         Initialize(label, data, mode, initial, min, max);
     }
@@ -110,7 +112,7 @@ public class DateTimePickerTemplateAction : ITemplateAction
     /// Largest date or time value that can be selected.
     /// Must be greater than the min value.
     /// </param>
-    public DateTimePickerTemplateAction(string label, string data, DateTimePickerMode mode, DateTime? initial = null, DateTime? min = null, DateTime? max = null): base(TemplateActionType.DatetimePicker)
+    public DateTimePickerTemplateAction(string? label, string data, DateTimePickerMode mode, DateTime? initial = null, DateTime? min = null, DateTime? max = null): base(TemplateActionType.DatetimePicker)
     {
         var format = GetDateTimeFormat(mode);
         Initialize(label, data, mode,
@@ -119,7 +121,8 @@ public class DateTimePickerTemplateAction : ITemplateAction
                    max == null ? null : ((DateTime)max).ToString(format));
     }
 
-    internal void Initialize(string label, string data, DateTimePickerMode mode, string initial, string min, string max)
+    [MemberNotNull(nameof(Data))]
+    internal void Initialize(string? label, string data, DateTimePickerMode mode, string? initial, string? min, string? max)
     {
         Label = label?.Substring(0, Math.Min(label.Length, 20));
         Data = data.Substring(0, Math.Min(data.Length, 300));
@@ -154,6 +157,6 @@ public class DateTimePickerTemplateAction : ITemplateAction
         var initial = DateTime.ParseExact(dynamicObject?.initial, format, null);
         var min = DateTime.ParseExact(dynamicObject?.min, format, null);
         var max = DateTime.ParseExact(dynamicObject?.max, format, null);
-        return new DateTimePickerTemplateAction((string)dynamicObject?.label, (string)dynamicObject?.data, mode, initial, min, max);
+        return new DateTimePickerTemplateAction((string?)dynamicObject?.label, ((string?)dynamicObject?.data)!, mode, initial, min, max);
     }
 }

@@ -271,8 +271,8 @@
         /// <returns>BubbleContainer</returns>
         public static BubbleContainer SetHero(this BubbleContainer self, string imageUrl,
             int? flex = null, Spacing? margin = null, Align? align = null,
-            Gravity? gravity = null, ComponentSize? size = null, AspectRatio aspectRatio = null,
-            AspectMode? aspectMode = null, string backgroundColor = null)
+            Gravity? gravity = null, ComponentSize? size = null, AspectRatio? aspectRatio = null,
+            AspectMode? aspectMode = null, string? backgroundColor = null)
         {
             self.Hero = new ImageComponent(imageUrl)
             {

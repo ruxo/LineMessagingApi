@@ -21,6 +21,6 @@
         /// Color of the separator. Use a hexadecimal color code.
         /// <para>(Optional)</para>
         /// </summary>
-        public string Color { get; set; }
+        public string? Color { get; set; }
     }
 }

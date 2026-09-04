@@ -15,18 +15,18 @@
         /// Max width: 1024px
         /// Max: 1 MB
         /// </summary>
-        public string ThumbnailImageUrl { get; }
+        public string? ThumbnailImageUrl { get; }
 
         /// <summary>
         /// Background color of image. Specify a RGB color value. The default value is #FFFFFF (white).
         /// </summary>
-        public string ImageBackgroundColor { get; }
+        public string? ImageBackgroundColor { get; }
 
         /// <summary>
         /// Title
         /// Max: 40 characters
         /// </summary>
-        public string Title { get; }
+        public string? Title { get; }
 
         /// <summary>
         /// Message text
@@ -44,7 +44,7 @@
         /// <summary>
         /// Action when image is tapped; set for the entire image, title, and text area
         /// </summary>
-        public ITemplateAction DefaultAction { get; }
+        public ITemplateAction? DefaultAction { get; }
 
         /// <summary>
         /// Constructor
@@ -76,9 +76,9 @@
         /// <param name="defaultAction">
         /// Action when image is tapped; set for the entire image, title, and text area
         /// </param>
-        public CarouselColumn(string text, string thumbnailImageUrl = null, string title = null,
-            IList<ITemplateAction> actions = null, string imageBackgroundColor = "#FFFFFF",
-            ITemplateAction defaultAction = null)
+        public CarouselColumn(string text, string? thumbnailImageUrl = null, string? title = null,
+            IList<ITemplateAction>? actions = null, string? imageBackgroundColor = "#FFFFFF",
+            ITemplateAction? defaultAction = null)
         {
             ThumbnailImageUrl = thumbnailImageUrl;
             Title = title?.Substring(0, Math.Min(title.Length, 40));

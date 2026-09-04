@@ -25,7 +25,7 @@
         /// Max: 50 characters
         /// Supported on LINE iOS version 8.2.0 and later.
         /// </summary>
-        public string Label { get; }
+        public string? Label { get; }
 
         /// <summary>
         /// Constructor
@@ -43,7 +43,7 @@
         /// Max: 50 characters
         /// Supported on LINE iOS version 8.2.0 and later.
         /// </param>
-        public UriImagemapAction(ImagemapArea area, string linkUri, string label = null)
+        public UriImagemapAction(ImagemapArea area, string linkUri, string? label = null)
         {
             Area = area;
             LinkUri = linkUri;
